@@ -1,0 +1,37 @@
+---
+// Minimal Branding Bar component for the WikiSure Astro Demo
+const branding = {
+  company: "SynsureTech",
+  product: "WikiSure Semantic Engine",
+  logo: "/favicon.svg" // optional, safe to leave as-is
+};
+---
+
+<style>
+  .branding-bar {
+    width: 100%;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .branding-bar img {
+    height: 20px;
+  }
+
+  .branding-text {
+    font-size: 14px;
+    color: #4b5563;
+  }
+</style>
+
+<div class="branding-bar">
+  {branding.logo && <img src={branding.logo} alt="Logo" />}
+  <div class="branding-text">
+    {branding.company} — {branding.product}
+  </div>
+</div>

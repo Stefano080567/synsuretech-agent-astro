@@ -1,0 +1,81 @@
+---
+import BrandingBar from "../components/BrandingBar.astro";
+import AgentFlowContainer from "../components/AgentFlowContainer.astro";
+---
+
+<!-- GLOBAL THEME VARIABLES -->
+<style is:global>
+  :root[data-theme="light"] {
+    --st-bg: #ffffff;
+    --st-fg: #111111;
+    --st-border: #e5e7eb;
+    --st-surface: #f8f9fa;
+    --st-hover: #ececec;
+  }
+
+  :root[data-theme="dark"] {
+    --st-bg: #1A1D23;
+    --st-fg: #F5F7FA;
+    --st-border: #2d323b;
+    --st-surface: #242A33;
+    --st-hover: #2d333d;
+  }
+
+  :root {
+    --st-accent: #004FC4;
+    --st-accent-light: #4C8DFF;
+  }
+
+  body {
+    background: var(--st-bg);
+    color: var(--st-fg);
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+</style>
+
+<BrandingBar />
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 3.2rem 1rem 2rem 1rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-sub {
+    opacity: 0.75;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+</style>
+
+<div class="hero">
+  <div class="hero-title">WikiSure Semantic Agent Demo</div>
+  <div class="hero-sub">
+    Drei spezialisierte AI-Agenten arbeiten zusammen, um semantische Begriffe 
+    zu entwerfen, zu prüfen und kontextbezogen aufzubereiten.
+  </div>
+</div>
+
+<div class="section-title">AI Agents (A, B, C)</div>
+
+<AgentFlowContainer />

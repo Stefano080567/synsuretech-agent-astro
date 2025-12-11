@@ -1,0 +1,65 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const agents = [
+  { key: "A", label: "Draft Agent", description: "Erstellt erste Begriffsdefinitionen." },
+  { key: "B", label: "Validation Agent", description: "Prüft Logik, Konsistenz und Risiken." },
+  { key: "C", label: "Perspective Agent", description: "Erzeugt Perspektiven (OEM, Versicherer, API)." }
+];
+---
+
+<style>
+  .container {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .card {
+    background: var(--st-surface);
+    color: var(--st-fg);
+    padding: 1.4rem;
+    border: 1px solid var(--st-border);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+  }
+  .card:hover {
+    border-color: var(--st-accent);
+    box-shadow: 0 3px 14px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+
+  .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    opacity: 0.7;
+    margin-bottom: 0.4rem;
+  }
+
+  .title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+</style>
+
+<div class="container">
+  {agents.map(agent => (
+    <div class="card">
+      <div class="label">Agent {agent.key}</div>
+      <div class="title">{agent.label}</div>
+      <div class="desc">{agent.description}</div>
+    </div>
+  ))}
+</div>

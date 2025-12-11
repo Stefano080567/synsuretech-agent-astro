@@ -1,0 +1,1 @@
+curl -X Post https://wikisure-agent-astro-38b5n3jvr-sysnure-tech.vercel.app/api/save -H "Content-Type: application/json" -d '{"term":"TestTerm","canonical":"This is a canonical test.","perspective":{"api":"AOI test","operational":"Operational test","contractual":"Contract test","governance:"Governance test"}}'
