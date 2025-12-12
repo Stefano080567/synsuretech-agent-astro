@@ -1,22 +1,31 @@
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ url }) => {
-  const type = url.searchParams.get("type") || "draft";
+export const prerender = false;
 
-  return new Response(
-    JSON.stringify({
-      status: "ok",
-      agent: type,
-      message: `Agent '${type}' executed successfully`,
-      result: {
-        summary: "This is a live backend response.",
-        timestamp: new Date().toISOString()
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    const body = await request.json();
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        received: body,
+        agent: body.agent ?? "unknown",
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    }),
-    {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  );
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: "Invalid JSON",
+      }),
+      { status: 400 }
+    );
+  }
 };
