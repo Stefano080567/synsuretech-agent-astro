@@ -1,34 +1,141 @@
-.page {
-  padding: 72px 56px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+---
+/*
+  WikiSure Semantic Agent – Demo Page
+  Phase 4.4 (clean + working)
+*/
+---
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 32px;
-  margin-top: 40px;
-}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WikiSure Semantic Agent Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-.agent-card {
-  padding: 28px;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
+  <body>
+    <main class="page">
 
-.agent-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-}
+      <!-- HEADER -->
+      <header class="hero">
+        <h1>WikiSure Semantic Agent Demo</h1>
+        <p>
+          Three specialised AI agents collaborate to draft, validate and
+          contextualise semantic definitions.
+        </p>
+      </header>
 
-.agent-title {
-  margin-bottom: 8px;
-}
+      <!-- AGENT OVERVIEW -->
+      <section class="agents">
+        <h2>AI Agents (A, B, C)</h2>
 
-.agent-desc {
-  line-height: 1.5;
-  opacity: 0.85;
-}
+        <div class="agent-grid">
+          <div class="agent-card">
+            <h3>Agent A – Draft Agent</h3>
+            <p>Creates initial semantic definitions.</p>
+          </div>
+
+          <div class="agent-card">
+            <h3>Agent B – Validation Agent</h3>
+            <p>Checks logic, consistency and risks.</p>
+          </div>
+
+          <div class="agent-card">
+            <h3>Agent C – Perspective Agent</h3>
+            <p>Generates OEM, insurer and API perspectives.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FLOW OUTPUT (WICHTIG!) -->
+      <section class="flow">
+        <div id="flow"></div>
+      </section>
+
+    </main>
+
+    <!-- GLOBAL START AGENT SCRIPT -->
+    <script src="/src/scripts/startAgent.js"></script>
+
+    <style>
+      :root {
+        --blue: #0047ff;
+        --bg: #ffffff;
+        --border: #e6e8eb;
+        --text: #0a0a0a;
+        --muted: #555;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 64px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+        margin-bottom: 12px;
+      }
+
+      .hero p {
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .agents h2 {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .agent-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+      }
+
+      .agent-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        background: #fafafa;
+      }
+
+      .agent-card h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        color: var(--blue);
+      }
+
+      .agent-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .flow {
+        margin-top: 64px;
+      }
+
+      #flow pre {
+        background: #f5f7fa;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        white-space: pre-wrap;
+        font-size: 13px;
+      }
+    </style>
+  </body>
+</html>
