@@ -1,97 +1,34 @@
----
-import BrandingBar from "../components/BrandingBar.astro";
-import AgentFlowContainer from "../components/AgentFlowContainer.astro";
----
+.page {
+  padding: 72px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-<!-- GLOBAL STYLE OVERRIDES -->
-<style is:global>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-  }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
 
-  .page {
-    text-align: center;
-    margin-top: 60px;
-  }
+.agent-card {
+  padding: 28px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
 
-  .subtitle {
-    margin-top: -10px;
-    color: #555;
-    font-size: 18px;
-  }
+.agent-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
 
-  .agents-title {
-    margin-top: 40px;
-    font-weight: bold;
-    font-size: 20px;
-  }
+.agent-title {
+  margin-bottom: 8px;
+}
 
-  .cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-  }
-
-  .agent-card {
-    width: 280px;
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid #e2e2e2;
-    background: #fafafa;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .agent-card:hover {
-    scale: 1.02;
-    background: #f0f8ff;
-  }
-
-  .agent-title {
-    font-weight: bold;
-  }
-
-  pre {
-    text-align: left;
-  }
-</style>
-
-<div class="page">
-  <BrandingBar />
-
-  <h1>WikiSure Semantic Agent Demo</h1>
-  <p class="subtitle">
-    Drei spezialisierte KI-Agenten arbeiten zusammen, um semantische Begriffe
-    zu entwerfen, zu prüfen und kontextbezogen aufzubereiten.
-  </p>
-
-  <div class="agents-title">AI Agents (A, B, C)</div>
-
-  <div class="cards">
-
-    <div class="agent-card" onclick="startAgent('draft')">
-      <div class="agent-title">Agent A — Draft Agent</div>
-      <div>Erstellt erste semantische Definitionen.</div>
-    </div>
-
-    <div class="agent-card" onclick="startAgent('validation')">
-      <div class="agent-title">Agent B — Validation Agent</div>
-      <div>Prüft Logik, Konsistenz und Risiken.</div>
-    </div>
-
-    <div class="agent-card" onclick="startAgent('perspective')">
-      <div class="agent-title">Agent C — Perspective Agent</div>
-      <div>Erzeugt OEM-, Versicherer- und API-Perspektiven.</div>
-    </div>
-
-  </div>
-
-  <AgentFlowContainer id="flow" />
-</div>
-
-<!-- Load global script -->
-<script src="/src/scripts/startAgent.js"></script>
-<script src="/scripts/startAgent.js"></script>
+.agent-desc {
+  line-height: 1.5;
+  opacity: 0.85;
+}
