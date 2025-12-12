@@ -1,31 +1,18 @@
 import type { APIRoute } from "astro";
 
-export const prerender = false;
-
 export const POST: APIRoute = async ({ request }) => {
-  try {
-    const body = await request.json();
+  const body = await request.json();
 
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        received: body,
-        agent: body.agent ?? "unknown",
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (err) {
-    return new Response(
-      JSON.stringify({
-        ok: false,
-        error: "Invalid JSON",
-      }),
-      { status: 400 }
-    );
-  }
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      agent: body.agent ?? "unknown",
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 };
