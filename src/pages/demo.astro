@@ -1,66 +1,151 @@
 ---
-import Layout from "../layouts/Layout.astro";
 ---
-
-<Layout title="WikiSure Agent Demo">
-  <main style="padding: 48px; max-width: 720px; margin: 0 auto; font-family: system-ui;">
-    <h1 style="font-size: 32px; margin-bottom: 8px;">
-      WikiSure Agent Demo
-    </h1>
-
-    <p style="margin-bottom: 24px; color: #555;">
-      Click the button below to start the semantic agent.
-    </p>
-
-    <button
-      id="start-agent"
-      style="
-        padding: 12px 20px;
-        border-radius: 8px;
-        border: none;
-        background: #0047ff;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-      "
-    >
-      Start Agent
-    </button>
-
-    <pre
-      id="agent-result"
-      style="
-        margin-top: 24px;
-        padding: 16px;
-        background: #f4f6fa;
-        border-radius: 8px;
-        min-height: 60px;
-        font-size: 14px;
-      "
-    ></pre>
-  </main>
-
-  <script>
-    const btn = document.getElementById("start-agent");
-    const out = document.getElementById("agent-result");
-
-    btn.addEventListener("click", async () => {
-      out.textContent = "Running agent...";
-
-      try {
-        const res = await fetch("/api/agent", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ agent: "draft" })
-        });
-
-        const text = await res.text();
-        out.textContent = text;
-      } catch (err) {
-        out.textContent = "Error calling agent API";
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WikiSure Agent Demo</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont;
+        background: #f8f9fb;
+        margin: 0;
+        padding: 80px 24px;
+        color: #111;
       }
-    });
-  </script>
-</Layout>
+
+      .container {
+        max-width: 820px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 40px;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: #555;
+        margin-bottom: 48px;
+      }
+
+      .step {
+        display: none;
+        background: #fff;
+        border-radius: 14px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      }
+
+      .step.active {
+        display: block;
+      }
+
+      .step-label {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #777;
+        margin-bottom: 12px;
+      }
+
+      .step h2 {
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+
+      .actions {
+        margin-top: 24px;
+        display: flex;
+        gap: 12px;
+      }
+
+      button {
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+      }
+
+      .primary {
+        background: #004FC4;
+        color: white;
+      }
+
+      .secondary {
+        background: transparent;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Shared Meaning</h1>
+      <div class="subtitle">
+        Five simple steps to agree on what a term really means.
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step active" id="step-1">
+        <div class="step-label">Step 1 of 5</div>
+        <h2>Draft a Meaning</h2>
+        <p>Create an initial definition everyone can react to.</p>
+        <div class="actions">
+          <button class="primary" onclick="nextStep(2)">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" id="step-2">
+        <div class="step-label">Step 2 of 5</div>
+        <h2>Validate Logic</h2>
+        <p>Check consistency, risks and missing assumptions.</p>
+        <div class="actions">
+          <button class="secondary" onclick="nextStep(1)">Back</button>
+          <button class="primary" onclick="nextStep(3)">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" id="step-3">
+        <div class="step-label">Step 3 of 5</div>
+        <h2>Add Perspectives</h2>
+        <p>OEM, insurer, legal and API views are added.</p>
+        <div class="actions">
+          <button class="secondary" onclick="nextStep(2)">Back</button>
+          <button class="primary" onclick="nextStep(4)">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" id="step-4">
+        <div class="step-label">Step 4 of 5</div>
+        <h2>Align Stakeholders</h2>
+        <p>Different parties compare and align interpretations.</p>
+        <div class="actions">
+          <button class="secondary" onclick="nextStep(3)">Back</button>
+          <button class="primary" onclick="nextStep(5)">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" id="step-5">
+        <div class="step-label">Step 5 of 5</div>
+        <h2>Shared Understanding</h2>
+        <p>The term is now clear, reusable and governed.</p>
+        <div class="actions">
+          <button class="secondary" onclick="nextStep(4)">Back</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function nextStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById(`step-${n}`).classList.add('active');
+      }
+    </script>
+  </body>
+</html>
