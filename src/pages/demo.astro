@@ -1,141 +1,66 @@
 ---
-/*
-  WikiSure Semantic Agent – Demo Page
-  Phase 4.4 (clean + working)
-*/
+import Layout from "../layouts/Layout.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>WikiSure Semantic Agent Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
+<Layout title="WikiSure Agent Demo">
+  <main style="padding: 48px; max-width: 720px; margin: 0 auto; font-family: system-ui;">
+    <h1 style="font-size: 32px; margin-bottom: 8px;">
+      WikiSure Agent Demo
+    </h1>
 
-  <body>
-    <main class="page">
+    <p style="margin-bottom: 24px; color: #555;">
+      Click the button below to start the semantic agent.
+    </p>
 
-      <!-- HEADER -->
-      <header class="hero">
-        <h1>WikiSure Semantic Agent Demo</h1>
-        <p>
-          Three specialised AI agents collaborate to draft, validate and
-          contextualise semantic definitions.
-        </p>
-      </header>
-
-      <!-- AGENT OVERVIEW -->
-      <section class="agents">
-        <h2>AI Agents (A, B, C)</h2>
-
-        <div class="agent-grid">
-          <div class="agent-card">
-            <h3>Agent A – Draft Agent</h3>
-            <p>Creates initial semantic definitions.</p>
-          </div>
-
-          <div class="agent-card">
-            <h3>Agent B – Validation Agent</h3>
-            <p>Checks logic, consistency and risks.</p>
-          </div>
-
-          <div class="agent-card">
-            <h3>Agent C – Perspective Agent</h3>
-            <p>Generates OEM, insurer and API perspectives.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- FLOW OUTPUT (WICHTIG!) -->
-      <section class="flow">
-        <div id="flow"></div>
-      </section>
-
-    </main>
-
-    <!-- GLOBAL START AGENT SCRIPT -->
-    <script src="/src/scripts/startAgent.js"></script>
-
-    <style>
-      :root {
-        --blue: #0047ff;
-        --bg: #ffffff;
-        --border: #e6e8eb;
-        --text: #0a0a0a;
-        --muted: #555;
-      }
-
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Helvetica, Arial, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-      }
-
-      .page {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 48px 24px 96px;
-      }
-
-      .hero {
-        text-align: center;
-        margin-bottom: 64px;
-      }
-
-      .hero h1 {
-        font-size: 36px;
-        margin-bottom: 12px;
-      }
-
-      .hero p {
-        color: var(--muted);
-        font-size: 16px;
-      }
-
-      .agents h2 {
-        text-align: center;
-        margin-bottom: 32px;
-      }
-
-      .agent-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 24px;
-      }
-
-      .agent-card {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 24px;
-        background: #fafafa;
-      }
-
-      .agent-card h3 {
-        margin-top: 0;
-        margin-bottom: 8px;
-        color: var(--blue);
-      }
-
-      .agent-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .flow {
-        margin-top: 64px;
-      }
-
-      #flow pre {
-        background: #f5f7fa;
-        border: 1px solid var(--border);
+    <button
+      id="start-agent"
+      style="
+        padding: 12px 20px;
         border-radius: 8px;
+        border: none;
+        background: #0047ff;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      "
+    >
+      Start Agent
+    </button>
+
+    <pre
+      id="agent-result"
+      style="
+        margin-top: 24px;
         padding: 16px;
-        white-space: pre-wrap;
-        font-size: 13px;
+        background: #f4f6fa;
+        border-radius: 8px;
+        min-height: 60px;
+        font-size: 14px;
+      "
+    ></pre>
+  </main>
+
+  <script>
+    const btn = document.getElementById("start-agent");
+    const out = document.getElementById("agent-result");
+
+    btn.addEventListener("click", async () => {
+      out.textContent = "Running agent...";
+
+      try {
+        const res = await fetch("/api/agent", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ agent: "draft" })
+        });
+
+        const text = await res.text();
+        out.textContent = text;
+      } catch (err) {
+        out.textContent = "Error calling agent API";
       }
-    </style>
-  </body>
-</html>
+    });
+  </script>
+</Layout>
