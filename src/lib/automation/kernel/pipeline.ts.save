@@ -1,0 +1,78 @@
+// src/lib/automation/kernel/pipeline.ts
+// Sprint 1 (B.6): Inject OrgContext into pipeline execution context (demo-safe)
+
+import { resolveOrgContext } from "../../org/context";
+
+// NOTE: These imports must match your existing kernel structure.
+// If your project has different paths, replace them accordingly.
+import { runAgent } from "./runner";
+
+export type PipelineName = string;
+
+export type PipelineRunResult = {
+  ok: boolean;
+  pipeline: PipelineName[];
+  output?: Record<string, unknown>;
+  failedAt?: string;
+  error?: string;
+};
+
+export type ExecutionContext = {
+  // Sprint 1: org context is now always present (defaults to demo-org)
+  org: {
+    orgId: string;
+    role: "editor" | "reviewer" | "supervisor";
+  };
+};
+
+function resultKey(agentName: string) {
+  // aligns with your earlier output style: DriftDetectorResult, ValidationResult, etc.
+  return `${agentName}Result`;
+}
+
+export async function runPipeline(
+  pipeline: PipelineName[],
+  payload: any
+): Promise<PipelineRunResult> {
+  try {
+    // Demo-safe org context resolution (defaults to demo-org/editor)
+    const org = resolveOrgContext(payload?.context);
+
+    const ctx: ExecutionContext = { org };
+
+    const output: Record<string, unknown> = {};
+    let currentPayload: any = payload;
+
+    for (const agentName of pipeline) {
+      const res = await runAgent(agentName, currentPayload, ctx);
+
+      if (!res?.ok) {
+        return {
+          ok: false,
+          pipeline,
+          failedAt: agentName,
+          error: res?.error || `Agent failed: ${agentName}`,
+        };
+      }
+
+      // Store agent result under a stable key
+      output[resultKey(agentName)] = res.output ?? res;
+
+      // Optionally allow passing enriched payload forward
+      // (If your runAgent returns `nextPayload`, use it; else keep current)
+      currentPayload = res.nextPayload ?? currentPayload;
+    }
+
+    return {
+      ok: true,
+      pipeline,
+      output,
+    };
+  } catch (err: any) {
+    return {
+      ok: false,
+      pipeline,
+      error: err?.message || "Unknown pipeline error",
+    };
+  }
+}
