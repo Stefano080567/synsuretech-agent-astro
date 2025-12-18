@@ -16,7 +16,14 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+# --- local scratch / experiments ---
+context.ts
+mein-projekt/
 
+# --- parked architecture (NOT part of demo freeze) ---
+src/lib/automation/
+src/lib/org/
+src/pages/api/
 # macOS-specific files
 .DS_Store
 
