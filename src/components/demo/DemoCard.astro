@@ -2,7 +2,20 @@
 /**
  * DemoCard.astro
  * Pure UI component for the WikiSure™ demo.
- * NO logic, NO API calls, NO state outside the DOM.
+ *
+ * Perspective:
+ * - Platform Provider (Embedded Insurance)
+ *
+ * Rules:
+ * - NO business logic
+ * - NO API calls
+ * - NO AI execution
+ * - NO state outside the DOM
+ *
+ * Purpose:
+ * - Explain WHAT happens
+ * - Explain WHY it matters
+ * - Create "aha" moments through clarity
  */
 ---
 
@@ -16,10 +29,37 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.08);
   }
 
-  h1 { margin: 0 0 6px 0; }
-  .subtle { color: #6b7280; margin-bottom: 24px; line-height: 1.5; }
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+  }
 
-  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  h2 {
+    margin-top: 32px;
+    font-size: 20px;
+  }
+
+  .subtle {
+    color: #6b7280;
+    margin-bottom: 24px;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .perspective {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 28px;
+    font-size: 14px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
   input, textarea {
     width: 100%;
     padding: 10px;
@@ -29,7 +69,9 @@
     font-size: 14px;
   }
 
-  textarea { min-height: 120px; }
+  textarea {
+    min-height: 120px;
+  }
 
   .grid2 {
     display: grid;
@@ -39,25 +81,34 @@
   }
 
   button {
-    margin-top: 14px;
-    padding: 10px 14px;
+    margin-top: 18px;
+    padding: 12px 16px;
     border-radius: 10px;
     border: none;
     background: #2563eb;
     color: white;
     font-weight: 700;
     cursor: pointer;
+    font-size: 14px;
   }
 
   .hint {
-    font-size: 12px;
+    font-size: 13px;
     color: #6b7280;
-    margin-top: 8px;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .explain {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.6;
   }
 
   #decision {
-    margin-top: 24px;
-    padding: 16px;
+    margin-top: 28px;
+    padding: 18px;
     border-radius: 12px;
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -65,39 +116,88 @@
 </style>
 
 <div class="card">
-  <h1>WikiSure™ Demo</h1>
+  <h1>WikiSure™ — Semantic Governance Demo</h1>
+
   <p class="subtle">
-    A single-user semantic governance demo.
-    Evaluate how definitions are aligned, challenged, and resolved.
+    This demo shows how a <strong>platform provider</strong> can govern insurance
+    definitions across partners, insurers and regulators — with AI support and
+    human-in-the-loop control.
   </p>
 
-  <!-- Step 1 -->
-  <div>
-    <label>Term</label>
-    <input id="term" placeholder="e.g. Embedded Insurance" />
-    <button id="aiSuggestBtn">AI Suggest</button>
+  <div class="perspective">
+    <strong>Perspective:</strong><br />
+    You are a <strong>Platform Provider</strong> embedding insurance into your product.
+    Your challenge is not pricing or APIs — it is <em>shared meaning</em>.
   </div>
 
-  <!-- Step 2 -->
+  <!-- STEP 1 -->
+  <h2>1. Define a Shared Term</h2>
+
+  <label>Insurance Term</label>
+  <input id="term" placeholder="e.g. Embedded Insurance Coverage Scope" />
+
+  <div class="explain">
+    Platforms work with insurers, MGAs, regulators and partners.
+    If everyone uses the same word differently, integration slows down or breaks.
+  </div>
+
+  <!-- STEP 2 -->
+  <h2>2. Compare Definitions</h2>
+
   <div class="grid2">
     <div>
-      <label>Canonical Definition (Baseline)</label>
-      <textarea id="canonical" placeholder="Canonical definition of the term"></textarea>
+      <label>Canonical Definition (Current Baseline)</label>
+      <textarea
+        id="canonical"
+        placeholder="The currently agreed definition used across the ecosystem"
+      ></textarea>
     </div>
+
     <div>
       <label>Proposed Change (Draft)</label>
-      <textarea id="draft" placeholder="Proposed changes to the definition"></textarea>
+      <textarea
+        id="draft"
+        placeholder="A proposed adjustment by a partner or insurer"
+      ></textarea>
     </div>
   </div>
 
-  <div class="hint">
-    AI suggestions appear here. Human decision remains authoritative.
+  <div class="explain">
+    Changes often come from new regulations, new markets, or new distribution models.
+    The question is not <em>who is right</em> — but whether the change is
+    <strong>acceptable, traceable and aligned</strong>.
   </div>
+
+  <!-- STEP 3 -->
+  <h2>3. Governance & AI Assistance</h2>
+
+  <button id="aiSuggestBtn">Show AI-Based Suggestion (Demo)</button>
+
+  <div class="hint">
+    In production, AI can suggest improvements, highlight conflicts or missing context.
+    Humans remain fully in control and make the final decision.
+  </div>
+
+  <!-- STEP 4 -->
+  <h2>4. Governance Decision</h2>
 
   <button id="governanceBtn">Run Governance Check</button>
 
-  <div id="decision" style="display:none;">
-    <h3>Governance Decision</h3>
-    <div id="decisionContent"></div>
+  <div id="decision">
+    <strong>Governance Outcome (Illustrative):</strong>
+    <div class="explain">
+      The proposed definition is acceptable <em>with conditions</em>.
+      Required actions may include documentation updates, partner alignment or
+      regulatory review.
+    </div>
+  </div>
+
+  <!-- FINAL AHA -->
+  <h2>Why this matters</h2>
+
+  <div class="explain">
+    WikiSure™ does not replace insurers, platforms or regulators.
+    It provides a <strong>shared semantic layer</strong> that reduces friction,
+    prevents misunderstandings and makes AI usable in regulated environments.
   </div>
 </div>
