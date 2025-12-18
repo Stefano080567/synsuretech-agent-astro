@@ -1,35 +1,156 @@
-<!-- STEP 4 -->
-<h2>4. Governance Decision</h2>
+---
+/**
+ * DemoCard.astro
+ * Pure UI component for the WikiSure™ demo.
+ * NO logic, NO API calls, NO state outside the DOM.
+ * Perspective: Platform Provider (Embedded Insurance)
+ */
+---
 
-<button id="governanceBtn">Run Governance Check</button>
+<style>
+  .card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
 
-<div id="decision">
-  <strong>Governance Outcome (Illustrative):</strong>
+  h1 { margin: 0 0 6px 0; font-size: 28px; }
+  h2 { margin-top: 32px; font-size: 20px; }
 
-  <div class="explain">
-    From a <strong>platform perspective</strong>, the proposed definition is
-    <em>acceptable with conditions</em>.
-    <br /><br />
-    This means the concept can move forward — but only if
-    documentation is aligned, partners share the same interpretation,
-    and regulatory expectations are respected.
+  .subtle {
+    color: #6b7280;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  textarea { min-height: 120px; }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 8px;
+  }
+
+  .explain {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  #decision {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+  }
+</style>
+
+<div class="card">
+  <h1>WikiSure™ Demo</h1>
+  <p class="subtle">
+    <strong>Perspective:</strong> Platform Provider offering embedded insurance.<br />
+    This demo illustrates how shared semantic governance supports human-in-the-loop
+    decision-making across insurers, partners and regulators.
+  </p>
+
+  <!-- STEP 1 -->
+  <h2>1. Define a Term</h2>
+  <label>Term</label>
+  <input id="term" placeholder="e.g. Embedded Insurance Consent" />
+
+  <div class="hint">
+    As a platform, you must align terminology across insurers, APIs, UX flows and compliance teams.
   </div>
-</div>
 
-<!-- FINAL AHA -->
-<h2>Why this matters for platforms</h2>
+  <!-- STEP 2 -->
+  <h2>2. Compare Definitions</h2>
+  <div class="grid2">
+    <div>
+      <label>Canonical Definition (Baseline)</label>
+      <textarea id="canonical" placeholder="Approved baseline definition"></textarea>
+    </div>
+    <div>
+      <label>Proposed Change (Draft)</label>
+      <textarea id="draft" placeholder="New or adapted definition"></textarea>
+    </div>
+  </div>
 
-<div class="explain">
-  As a platform provider, you integrate insurance into products, journeys
-  and ecosystems — often across multiple partners and jurisdictions.
-  <br /><br />
-  WikiSure™ gives you a <strong>shared semantic governance layer</strong>:
-  <ul>
-    <li>definitions are explicit, not implicit</li>
-    <li>AI suggestions are supervised, not autonomous</li>
-    <li>decisions are explainable, not opaque</li>
-  </ul>
-  <br />
-  The result: faster rollout of embedded insurance — without losing
-  regulatory control or human accountability.
+  <div class="hint">
+    Changes often arise from new partners, new markets or regulatory clarification.
+  </div>
+
+  <!-- STEP 3 -->
+  <h2>3. AI as Assistant (Illustrative)</h2>
+  <button type="button">AI Suggest</button>
+  <div class="hint">
+    AI helps highlight ambiguities or missing context — it does not decide.
+  </div>
+
+  <!-- STEP 4 -->
+  <h2>4. Governance Decision</h2>
+  <button type="button">Run Governance Check</button>
+
+  <div id="decision">
+    <strong>Governance Outcome (Illustrative):</strong>
+    <div class="explain">
+      From a platform perspective, the proposed definition is acceptable
+      <em>with conditions</em>.<br />
+      Documentation must be aligned, partners must share the same interpretation,
+      and regulatory expectations must be respected.
+    </div>
+  </div>
+
+  <!-- FINAL AHA -->
+  <h2>Why this matters for platforms</h2>
+  <div class="explain">
+    WikiSure™ does not replace insurers, platforms or regulators.<br /><br />
+    It provides a <strong>shared semantic governance layer</strong> so that:
+    <ul>
+      <li>Definitions stay consistent across partners</li>
+      <li>AI remains explainable and reviewable</li>
+      <li>Humans stay accountable for decisions</li>
+      <li>Embedded insurance scales without semantic chaos</li>
+    </ul>
+    <strong>The result:</strong> Faster rollout of embedded insurance —
+    without losing regulatory control or human oversight.
+  </div>
 </div>
