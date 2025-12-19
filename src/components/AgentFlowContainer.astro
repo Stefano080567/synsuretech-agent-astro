@@ -1,91 +1,540 @@
 ---
 /**
  * AgentFlowContainer.astro
- * Demo-only step controller (UI only)
+ * 6-step guided demo (single page) with deterministic UI flow.
+ * - Apple-like minimal layout
+ * - Next/Back working via inline script
+ * - No external dependencies
+ * - Preserves inputs across steps (DOM stays in place)
  */
+const steps = [
+  { id: "why", title: "Why WikiSure™ exists" },
+  { id: "context", title: "Demo context" },
+  { id: "term", title: "Term" },
+  { id: "definition", title: "Definition" },
+  { id: "validation", title: "Validation" },
+  { id: "decision", title: "Decision" },
+];
 ---
 
 <style>
-  .step { display: none; }
-  .step.active { display: block; }
+  :global(body) {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+      "Segoe UI Emoji";
+    background: radial-gradient(1200px 700px at 50% -20%, rgba(37, 99, 235, 0.20), rgba(255,255,255,0)),
+      #f6f7fb;
+    color: #0f172a;
+  }
 
-  .nav {
-    margin-top: 32px;
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 56px 18px 80px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.86);
+    border: 1px solid rgba(15,23,42,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.10);
+    overflow: hidden;
+  }
+
+  .top {
+    padding: 26px 26px 14px;
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .title {
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 26px;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    margin: 8px 0 0;
+    color: rgba(15,23,42,0.7);
+    line-height: 1.5;
+    font-size: 14px;
+    max-width: 68ch;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,0.10);
+    color: rgba(15,23,42,0.75);
+    background: rgba(255,255,255,0.65);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.18);
+  }
+
+  .progress {
+    padding: 14px 26px 22px;
+  }
+
+  .barRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .steps {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(15,23,42,0.10);
+    color: rgba(15,23,42,0.7);
+    background: rgba(255,255,255,0.6);
+  }
+  .chip[data-active="true"] {
+    color: #0b1220;
+    border-color: rgba(37,99,235,0.35);
+    background: rgba(37,99,235,0.10);
+  }
+
+  .pct {
+    font-size: 12px;
+    color: rgba(15,23,42,0.65);
+  }
+
+  .content {
+    padding: 26px;
+  }
+
+  .stepTitle {
+    margin: 0 0 10px;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .text {
+    margin: 0 0 14px;
+    color: rgba(15,23,42,0.78);
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 820px) {
+    .grid2 { grid-template-columns: 1fr; }
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(15,23,42,0.75);
+    margin: 10px 0 6px;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(15,23,42,0.14);
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    background: rgba(255,255,255,0.9);
+  }
+
+  textarea { min-height: 120px; resize: vertical; }
+
+  .hint {
+    font-size: 12px;
+    color: rgba(15,23,42,0.62);
+    margin-top: 10px;
+  }
+
+  .panel {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(15,23,42,0.10);
+    background: rgba(255,255,255,0.65);
+  }
+
+  .actions {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(15,23,42,0.08);
   }
 
-  button {
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: none;
+  .btn {
+    appearance: none;
+    border: 1px solid rgba(15,23,42,0.14);
+    background: rgba(255,255,255,0.75);
+    color: #0b1220;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform .08s ease, background .12s ease, border-color .12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); border-color: rgba(37,99,235,0.30); }
+  .btn:active { transform: translateY(0); }
+  .btnPrimary {
     background: #2563eb;
     color: white;
-    font-weight: 600;
-    cursor: pointer;
+    border-color: rgba(37,99,235,0.65);
+  }
+  .btnPrimary:hover { border-color: rgba(37,99,235,0.85); }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .step {
+    display: none;
+  }
+  .step[data-visible="true"] {
+    display: block;
   }
 
-  button.secondary {
-    background: #e5e7eb;
-    color: #111827;
+  .kbd {
+    font-size: 12px;
+    padding: 2px 8px;
+    border: 1px solid rgba(15,23,42,0.14);
+    border-bottom-width: 2px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.7);
+    color: rgba(15,23,42,0.75);
+  }
+
+  .smallRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
   }
 </style>
 
-<div id="flow">
+<div class="wrap">
+  <div class="card" id="flowRoot" data-total={steps.length}>
+    <div class="top">
+      <div class="brand">
+        <div>
+          <h1 class="title">WikiSure™ Demo</h1>
+          <p class="subtitle">
+            Guided, single-user walkthrough. We view the process from a <strong>Platform Provider</strong> perspective,
+            while showing why the same governed clarity benefits <strong>insurers</strong>, <strong>OEMs</strong> and <strong>customers</strong>.
+          </p>
+        </div>
+        <div class="pill" title="Deterministic demo mode">
+          <span class="dot"></span>
+          Demo mode • Germany • Embedded Insurance
+        </div>
+      </div>
+    </div>
 
-  <section class="step active">
-    <h2>Why WikiSure™</h2>
-    <p>Shared understanding before automation.</p>
-  </section>
+    <div class="progress">
+      <div class="barRow">
+        <div class="steps" id="stepChips">
+          {steps.map((s, i) => (
+            <span class="chip" data-step={i} data-active="false">
+              {i + 1}. {s.title}
+            </span>
+          ))}
+        </div>
+        <div class="pct">
+          Step <span id="stepIndex">1</span> / {steps.length}
+        </div>
+      </div>
+    </div>
 
-  <section class="step">
-    <h2>Definition</h2>
-    <p>Terms become explicit and governed.</p>
-  </section>
+    <div class="content">
+      <!-- STEP 1: WHY -->
+      <section class="step" data-step="0" data-visible="true">
+        <h2 class="stepTitle">Why WikiSure™ exists</h2>
+        <p class="text">
+          Modern ecosystems fail less because of missing technology — and more because of missing shared understanding.
+          When partners use the same words but mean different things, decisions slow down, responsibilities blur, and AI can amplify the confusion.
+        </p>
+        <p class="text">
+          WikiSure™ makes meaning operable: definitions are explicit, assumptions are visible, and decisions become traceable.
+          AI can assist — but humans remain accountable.
+        </p>
+        <div class="panel">
+          <div class="smallRow">
+            <span class="kbd">You</span>
+            <span class="text" style="margin:0;">
+              act as a <strong>Platform Provider</strong> deciding whether a term definition is safe to publish into an embedded insurance journey.
+            </span>
+          </div>
+        </div>
+      </section>
 
-  <section class="step">
-    <h2>Validation</h2>
-    <p>Humans stay accountable, AI assists.</p>
-  </section>
+      <!-- STEP 2: CONTEXT -->
+      <section class="step" data-step="1" data-visible="false">
+        <h2 class="stepTitle">Demo context</h2>
+        <p class="text">
+          Fixed context (deterministic): <strong>Germany</strong>, <strong>Embedded Insurance</strong>.
+          This is not a market selector right now — it is intentionally locked to avoid ambiguity and keep the story clean.
+        </p>
+        <div class="grid2">
+          <div class="panel">
+            <h3 class="stepTitle" style="font-size:14px;margin:0 0 6px;">Perspective</h3>
+            <p class="text" style="margin:0;">
+              Platform Provider (primary). We still highlight value for insurers, OEMs and customers.
+            </p>
+          </div>
+          <div class="panel">
+            <h3 class="stepTitle" style="font-size:14px;margin:0 0 6px;">Scope</h3>
+            <p class="text" style="margin:0;">
+              One governed term → one decision point. In reality, WikiSure™ scales this across orgs and products.
+            </p>
+          </div>
+        </div>
+      </section>
 
-  <section class="step">
-    <h2>Decision</h2>
-    <p>Outcomes are traceable and explainable.</p>
-  </section>
+      <!-- STEP 3: TERM -->
+      <section class="step" data-step="2" data-visible="false">
+        <h2 class="stepTitle">Term</h2>
+        <p class="text">
+          Pick a term that multiple parties use (platform, insurer, OEM, regulator, customer), and that could be misunderstood.
+        </p>
 
-  <section class="step">
-    <h2>Impact</h2>
-    <p>Less friction across ecosystems.</p>
-  </section>
+        <label for="term">Term</label>
+        <input id="term" placeholder="e.g. Embedded Insurance Consent" />
 
-  <section class="step">
-    <h2>Done</h2>
-    <p>This is one moment in a larger system.</p>
-  </section>
+        <div class="panel">
+          <div class="smallRow">
+            <button class="btn" type="button" id="aiSuggestBtn" title="Demo-only helper (no external calls)">
+              Suggest example term
+            </button>
+            <span class="hint">This demo button is deterministic (no API call).</span>
+          </div>
+          <div class="hint" id="aiHint" aria-live="polite"></div>
+        </div>
+      </section>
 
-  <div class="nav">
-    <button id="prev" class="secondary">Back</button>
-    <button id="next">Next</button>
+      <!-- STEP 4: DEFINITION -->
+      <section class="step" data-step="3" data-visible="false">
+        <h2 class="stepTitle">Definition</h2>
+        <p class="text">
+          As a platform provider, you want a definition that is usable in product, legal, and operations — not just “sounds right”.
+        </p>
+
+        <div class="grid2">
+          <div>
+            <label for="canonical">Baseline definition (current)</label>
+            <textarea id="canonical" placeholder="Write the current baseline definition..."></textarea>
+          </div>
+          <div>
+            <label for="draft">Proposed change (draft)</label>
+            <textarea id="draft" placeholder="Write a proposed refinement / change..."></textarea>
+          </div>
+        </div>
+
+        <div class="hint">
+          Tip: keep it implementation-friendly. If two teams cannot implement the same behavior from the text, the definition is not governed yet.
+        </div>
+      </section>
+
+      <!-- STEP 5: VALIDATION -->
+      <section class="step" data-step="4" data-visible="false">
+        <h2 class="stepTitle">Validation</h2>
+        <p class="text">
+          Quick check: does the draft introduce ambiguity? Does it shift responsibility? Does it create compliance risk?
+          In the real system, experts and AI assist — but accountability stays human.
+        </p>
+
+        <div class="panel">
+          <h3 class="stepTitle" style="font-size:14px;margin:0 0 6px;">Validation signals (demo)</h3>
+          <div class="grid2">
+            <div>
+              <label for="signal">Governance signal</label>
+              <select id="signal">
+                <option value="pass">PASS — clear and implementable</option>
+                <option value="revise">REVISE — acceptable but needs changes</option>
+                <option value="flag">FLAG — needs expert/regulatory review</option>
+              </select>
+            </div>
+            <div>
+              <label for="note">Short reviewer note</label>
+              <input id="note" placeholder="e.g. clarify consent timing + auditability" />
+            </div>
+          </div>
+          <div class="hint">This is the “human-in-the-loop” moment: the system can assist, but a person owns the decision.</div>
+        </div>
+      </section>
+
+      <!-- STEP 6: DECISION -->
+      <section class="step" data-step="5" data-visible="false">
+        <h2 class="stepTitle">Decision</h2>
+        <p class="text">
+          A governed outcome is not “yes/no only”. It is a decision with reasons and next actions.
+        </p>
+
+        <div class="panel" id="decisionPanel">
+          <strong>Governance Outcome (illustrative):</strong>
+          <div class="text" style="margin:8px 0 0;" id="decisionText">
+            Choose a signal in the previous step to see the decision summary.
+          </div>
+        </div>
+
+        <div class="panel">
+          <strong>Why this matters</strong>
+          <p class="text" style="margin:8px 0 0;">
+            WikiSure™ does not replace platforms, insurers, or regulators.
+            It enables a shared, governed language so implementation becomes faster, safer, and repeatable across partners.
+          </p>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="btn" type="button" id="backBtn">
+          ← Back
+        </button>
+
+        <div class="smallRow">
+          <span class="kbd">←</span><span class="hint" style="margin:0;">Back</span>
+          <span class="kbd">→</span><span class="hint" style="margin:0;">Next</span>
+        </div>
+
+        <button class="btn btnPrimary" type="button" id="nextBtn">
+          Next →
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
-<script>
-  const steps = document.querySelectorAll(".step");
-  let current = 0;
+<script is:inline>
+  // Deterministic single-page step state.
+  (() => {
+    const root = document.getElementById("flowRoot");
+    if (!root) return;
 
-  const show = (i) => {
-    steps.forEach((s, idx) => {
-      s.classList.toggle("active", idx === i);
+    const total = Number(root.getAttribute("data-total") || "6");
+    const stepEls = Array.from(root.querySelectorAll(".step"));
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const stepIndexEl = document.getElementById("stepIndex");
+
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+
+    const aiSuggestBtn = document.getElementById("aiSuggestBtn");
+    const aiHint = document.getElementById("aiHint");
+    const termInput = document.getElementById("term");
+
+    const signal = document.getElementById("signal");
+    const note = document.getElementById("note");
+    const decisionText = document.getElementById("decisionText");
+
+    const clamp = (n) => Math.max(0, Math.min(total - 1, n));
+
+    const readHash = () => {
+      const m = window.location.hash.match(/step=(\d+)/);
+      return m ? clamp(parseInt(m[1], 10) - 1) : 0;
+    };
+
+    const writeHash = (idx) => {
+      const n = clamp(idx) + 1;
+      window.location.hash = `step=${n}`;
+    };
+
+    const render = (idx) => {
+      const i = clamp(idx);
+
+      stepEls.forEach((el) => {
+        const s = Number(el.getAttribute("data-step"));
+        el.setAttribute("data-visible", String(s === i));
+      });
+
+      chips.forEach((c) => {
+        const s = Number(c.getAttribute("data-step"));
+        c.setAttribute("data-active", String(s === i));
+      });
+
+      if (stepIndexEl) stepIndexEl.textContent = String(i + 1);
+
+      if (backBtn) backBtn.disabled = i === 0;
+      if (nextBtn) nextBtn.textContent = (i === total - 1) ? "Done ✓" : "Next →";
+
+      // Update decision summary when on last step
+      if (i === total - 1 && signal && decisionText) {
+        const v = signal.value;
+        const n = (note && note.value ? ` Note: “${note.value}”.` : "");
+        if (v === "pass") decisionText.innerHTML =
+          `Outcome: <strong>PASS</strong>. Publishable for platform usage.${n}`;
+        if (v === "revise") decisionText.innerHTML =
+          `Outcome: <strong>REVISE</strong>. Acceptable with conditions (clarify wording, assign owner, update docs).${n}`;
+        if (v === "flag") decisionText.innerHTML =
+          `Outcome: <strong>FLAG</strong>. Requires expert / regulatory review before publishing.${n}`;
+      }
+    };
+
+    let step = readHash();
+    render(step);
+
+    window.addEventListener("hashchange", () => {
+      step = readHash();
+      render(step);
     });
-  };
 
-  document.getElementById("next").onclick = () => {
-    if (current < steps.length - 1) current++;
-    show(current);
-  };
+    nextBtn?.addEventListener("click", () => {
+      if (step >= total - 1) return; // Done
+      step = clamp(step + 1);
+      writeHash(step);
+      render(step);
+    });
 
-  document.getElementById("prev").onclick = () => {
-    if (current > 0) current--;
-    show(current);
-  };
+    backBtn?.addEventListener("click", () => {
+      step = clamp(step - 1);
+      writeHash(step);
+      render(step);
+    });
+
+    // Optional keyboard navigation
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") nextBtn?.click();
+      if (e.key === "ArrowLeft") backBtn?.click();
+    });
+
+    // Deterministic demo helper (no API)
+    aiSuggestBtn?.addEventListener("click", () => {
+      const example = "Embedded Insurance Consent";
+      if (termInput) termInput.value = termInput.value?.trim() ? termInput.value : example;
+      if (aiHint) aiHint.textContent =
+        "Suggestion (demo): “Embedded Insurance Consent” — high risk of misunderstanding across platform, insurer, OEM and customer.";
+    });
+  })();
 </script>
