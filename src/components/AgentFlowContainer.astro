@@ -1,120 +1,15 @@
 ---
-import { useState } from "preact/hooks";
-
-const steps = [
-  {
-    id: 1,
-    title: "Why WikiSure™ Exists",
-    content: `
-Modern ecosystems move fast — but speed alone is not enough.
-Alignment, clarity and shared understanding determine whether partners can execute reliably.
-
-WikiSure™ creates a governed space where meaning is explicit,
-decisions are visible, and accountability stays human.
-AI assists — humans stay in the driver’s seat.
-`,
-  },
-  {
-    id: 2,
-    title: "Demo Context",
-    content: `
-This demo is intentionally focused.
-
-• Geography: Germany  
-• Domain: Embedded Insurance  
-• Perspective: Platform Provider  
-
-One term. One decision. Fully traceable.
-`,
-  },
-  {
-    id: 3,
-    title: "Term Selection",
-    content: `
-Choose a term that multiple partners use —
-and often interpret differently.
-
-Example:
-“Embedded Insurance Consent”
-`,
-  },
-  {
-    id: 4,
-    title: "Definition",
-    content: `
-Below you see two versions of the same definition.
-
-LEFT: Existing baseline (what teams assume today)
-RIGHT: Proposed clarification (what teams align on)
-
-If two teams cannot implement the same behavior from a definition,
-it is not governed yet.
-`,
-  },
-  {
-    id: 5,
-    title: "Validation",
-    content: `
-Before a decision is finalized, it is reviewed.
-
-Signals:
-• PASS — clear and implementable
-• REVISE — acceptable, needs adjustment
-• FLAG — requires expert or regulatory review
-
-AI can highlight risks — humans decide.
-`,
-  },
-  {
-    id: 6,
-    title: "Decision",
-    content: `
-A decision is more than yes or no.
-
-It includes:
-• the chosen signal
-• a short rationale
-• next actions
-
-This is how shared understanding scales — safely.
-`,
-  },
-];
+import AgentFlow from "./AgentFlow";
 ---
 
-<script>
-  console.log("✅ AgentFlowContainer hydrated");
-</script>
+<section class="demo-flow-wrapper">
+  <AgentFlow client:load />
+</section>
 
-<div class="flow">
-
-  <nav class="steps">
-    {steps.map(step => (
-      <span class="step">{step.id}. {step.title}</span>
-    ))}
-  </nav>
-
-  <Flow />
-</div>
-
-<script>
-  function Flow() {
-    const [index, setIndex] = useState(0);
-    const step = steps[index];
-
-    return (
-      <section class="card">
-        <h1>{step.title}</h1>
-        <p style="white-space: pre-line">{step.content}</p>
-
-        <div class="controls">
-          <button
-            disabled={index === 0}
-            onClick={() => setIndex(i => i - 1)}
-          >
-            Back
-          </button>
-
-          <button
-            disabled={index === steps.length - 1}
-            onClick={() => setIndex(i
+<style>
+.demo-flow-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+</style>
