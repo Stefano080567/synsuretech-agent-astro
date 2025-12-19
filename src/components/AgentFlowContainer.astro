@@ -1,15 +1,90 @@
----
-import AgentFlow from "./AgentFlow";
----
+<script>
+  const steps = [
+    {
+      title: "Why WikiSure™ Exists",
+      content:
+        "<p>Modern ecosystems move fast — but only when everyone means the same thing by the same words.</p>" +
+        "<p>WikiSure™ turns shared understanding into something teams can rely on: explicit, reviewable, and traceable.</p>" +
+        "<p>AI can assist — but accountability always stays with humans.</p>",
+    },
+    {
+      title: "Demo Context",
+      content:
+        "<p><strong>Country:</strong> Germany</p>" +
+        "<p><strong>Industry:</strong> Embedded Insurance</p>" +
+        "<p><strong>Perspective:</strong> Platform Provider</p>" +
+        "<p>This demo is intentionally fixed to keep the story clear.</p>",
+    },
+    {
+      title: "Term Selection",
+      content:
+        "<p>Choose a term that multiple partners use — and often interpret differently.</p>" +
+        "<p><em>Example:</em> Embedded Insurance Consent</p>",
+    },
+    {
+      title: "Definition",
+      content:
+        "<div class='definition-grid'>" +
+          "<div class='box'>" +
+            "<h3>Current Definition</h3>" +
+            "<p>Consent is assumed once a user proceeds with the embedded insurance flow.</p>" +
+          "</div>" +
+          "<div class='box highlight'>" +
+            "<h3>Proposed Definition</h3>" +
+            "<p>Consent is explicitly confirmed by the user through a dedicated opt-in action before coverage is activated.</p>" +
+          "</div>" +
+        "</div>",
+    },
+    {
+      title: "Validation",
+      content:
+        "<p>A quick governance check helps assess clarity and responsibility.</p>" +
+        "<ul>" +
+          "<li>Is the definition unambiguous?</li>" +
+          "<li>Does it shift responsibility?</li>" +
+          "<li>Does it introduce compliance risk?</li>" +
+        "</ul>" +
+        "<p><strong>Human-in-the-loop:</strong> the system assists — a person decides.</p>",
+    },
+    {
+      title: "Decision",
+      content:
+        "<p><strong>Outcome:</strong> PASS</p>" +
+        "<p>The proposed definition is clear, implementable, and ready to be used across partners.</p>" +
+        "<p>This decision — and its reasoning — is now traceable and reusable.</p>",
+    },
+  ];
 
-<section class="demo-flow-wrapper">
-  <AgentFlow client:load />
-</section>
+  let current = 0;
 
-<style>
-.demo-flow-wrapper {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 48px 20px;
-}
-</style>
+  const container = document.getElementById("step-container");
+  const label = document.getElementById("stepLabel");
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function render() {
+    const step = steps[current];
+    container.innerHTML =
+      "<h2>" + step.title + "</h2>" + step.content;
+
+    label.textContent = "Step " + (current + 1) + " of " + steps.length;
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === steps.length - 1 ? "Finish" : "Next";
+  }
+
+  backBtn.onclick = function () {
+    if (current > 0) {
+      current--;
+      render();
+    }
+  };
+
+  nextBtn.onclick = function () {
+    if (current < steps.length - 1) {
+      current++;
+      render();
+    }
+  };
+
+  render();
+</script>
