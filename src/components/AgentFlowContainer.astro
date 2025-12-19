@@ -2,149 +2,126 @@
 /**
  * AgentFlowContainer.astro
  * UI-only demo flow for WikiSure™
- * No logic, no API calls, no dynamic state.
- * Purpose: explain how shared meaning is aligned in Embedded Insurance.
+ * Perspective: Platform Provider
+ * Product: Embedded Insurance
+ * Context: Germany (fixed, non-selectable)
  */
 ---
 
-<style>
-  .flow {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 48px 24px;
-  }
-
-  h2 {
-    margin-top: 48px;
-    margin-bottom: 12px;
-    font-size: 22px;
-  }
-
-  p {
-    color: #374151;
-    line-height: 1.6;
-    max-width: 760px;
-  }
-
-  .step {
-    margin-top: 36px;
-    padding: 24px;
-    border-radius: 16px;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-  }
-
-  .label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #2563eb;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .outcome {
-    margin-top: 24px;
-    padding: 20px;
-    border-radius: 14px;
-    background: #ffffff;
-    border: 1px dashed #d1d5db;
-  }
-
-  .final {
-    margin-top: 56px;
-    padding: 32px;
-    border-radius: 20px;
-    background: #111827;
-    color: #f9fafb;
-  }
-
-  .final p {
-    color: #e5e7eb;
-  }
-</style>
-
 <section class="flow">
 
-  <h2>Context</h2>
-  <p>
-    This example looks at Embedded Insurance in Germany.
-    Multiple parties collaborate to offer insurance within a digital product
-    or customer journey.
+  <h1>WikiSure™ Demo Flow</h1>
+  <p class="intro">
+    This demo shows a <strong>single governed semantic decision</strong>
+    from the perspective of a <strong>platform provider</strong>
+    operating an <strong>embedded insurance product</strong> in Germany.
   </p>
 
+  <!-- STEP 1 -->
   <div class="step">
-    <span class="label">Step 1 · Different viewpoints</span>
+    <h2>1. Define</h2>
     <p>
-      Insurers, platform operators, partners and compliance teams
-      often use the same terms — but mean slightly different things.
+      A key term is introduced that affects contracts, data exchange
+      and regulatory interpretation.
     </p>
-    <p>
-      Each interpretation is shaped by role, responsibility
-      and regulatory exposure.
-    </p>
-  </div>
-
-  <div class="step">
-    <span class="label">Step 2 · Where friction starts</span>
-    <p>
-      These differences usually stay hidden.
-      They surface late — during contracts, audits, integrations or incidents.
-    </p>
-    <p>
-      That is when alignment becomes expensive.
-    </p>
-  </div>
-
-  <div class="step">
-    <span class="label">Step 3 · Making meaning explicit</span>
-    <p>
-      WikiSure™ makes these differences visible — before they turn into friction.
-    </p>
-    <p>
-      Terms are reviewed from multiple perspectives
-      and documented in a shared, transparent way.
-    </p>
-  </div>
-
-  <div class="step">
-    <span class="label">Step 4 · Structured review</span>
-    <p>
-      A structured review clarifies whether a definition
-      can be reused as-is, needs alignment,
-      or must be escalated.
-    </p>
-
-    <div class="outcome">
-      <strong>Illustrative outcome</strong>
-      <p>
-        The definition is acceptable with conditions.
-        Minor clarification is required before reuse.
-      </p>
+    <div class="box">
+      <strong>Term:</strong> “Coverage Activation”
+      <br />
+      <em>Initial canonical definition is documented.</em>
     </div>
   </div>
 
+  <!-- STEP 2 -->
   <div class="step">
-    <span class="label">Step 5 · What changes</span>
+    <h2>2. Propose Change</h2>
     <p>
-      Once meaning is aligned, teams move faster
-      and decisions become easier to justify.
+      A partner proposes a refined interpretation based on operational needs.
     </p>
+    <div class="box">
+      <em>Proposed change:</em>
+      Coverage starts at vehicle handover instead of contract signature.
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <h2>3. Review</h2>
     <p>
-      Less back-and-forth. Fewer assumptions. Faster execution.
+      Stakeholders review the proposal from different perspectives:
+    </p>
+    <ul>
+      <li>Platform operations</li>
+      <li>Insurance partner</li>
+      <li>Compliance & regulation</li>
+    </ul>
+    <p class="note">
+      AI may assist by highlighting conflicts — humans remain accountable.
     </p>
   </div>
 
-  <div class="final">
-    <h2>Why this matters</h2>
+  <!-- STEP 4 -->
+  <div class="step">
+    <h2>4. Governance Decision</h2>
     <p>
-      WikiSure™ does not replace insurers, platforms or regulators.
-      It creates a shared semantic reference
-      that supports human judgment instead of bypassing it.
+      A governed decision is made with explicit conditions.
     </p>
+    <div class="box decision">
+      ✔ Accepted with conditions<br />
+      • Documentation updated<br />
+      • Partner alignment required<br />
+      • Regulatory note attached
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <h2>5. Outcome</h2>
     <p>
-      Alignment happens early — while change is still cheap.
+      The validated definition becomes reusable across systems,
+      contracts and AI processes.
+    </p>
+    <p class="highlight">
+      Shared meaning → Faster decisions → Clear accountability
     </p>
   </div>
 
 </section>
+
+<style>
+.flow {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.intro {
+  color: #4b5563;
+  margin-bottom: 32px;
+}
+
+.step {
+  margin-bottom: 32px;
+}
+
+.box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.decision {
+  background: #ecfeff;
+  border-color: #67e8f9;
+}
+
+.note {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.highlight {
+  font-weight: 600;
+}
+</style>
