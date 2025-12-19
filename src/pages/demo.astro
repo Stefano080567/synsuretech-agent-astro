@@ -1,122 +1,267 @@
 ---
+/**
+ * demo.astro
+ * WikiSure™ Demo – UI-only, freeze-safe
+ * Perspective: Platform Provider
+ * Product: Embedded Insurance
+ * Country: Germany (fixed, not selectable)
+ *
+ * NO backend
+ * NO agents
+ * NO API calls
+ * NO external state
+ */
+
+const pageTitle = "WikiSure™ Demo — Governance Made Visible";
+const fixedContext = {
+  country: "Germany",
+  product: "Embedded Insurance",
+  perspective: "Platform Provider"
+};
 ---
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>WikiSure Agent Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
 
     <style>
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont;
-        background: #f8f9fb;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+        background: #f5f7fb;
         margin: 0;
-        padding: 64px 24px;
-        color: #111;
+        padding: 40px 20px;
+        color: #0f172a;
       }
 
-      .screen {
-        display: none;
-        max-width: 800px;
-        margin: 0 auto 48px;
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
         background: white;
-        padding: 32px;
-        border-radius: 14px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      }
-
-      .screen.active {
-        display: block;
-      }
-
-      .step-label {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #555;
-        margin-bottom: 8px;
+        border-radius: 18px;
+        padding: 36px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
       }
 
       h1 {
         margin-top: 0;
-        margin-bottom: 12px;
+        margin-bottom: 6px;
+        font-size: 32px;
       }
 
-      p {
-        margin: 12px 0 24px;
-        color: #555;
+      .subtitle {
+        color: #475569;
+        margin-bottom: 28px;
+        line-height: 1.5;
+      }
+
+      .context {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .context-box {
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+      }
+
+      .context-box strong {
+        display: block;
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+      }
+
+      h2 {
+        margin-top: 36px;
+        margin-bottom: 10px;
+        font-size: 22px;
+      }
+
+      textarea, input {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #cbd5f5;
+        padding: 12px;
+        font-size: 14px;
+        margin-bottom: 14px;
+        font-family: inherit;
+      }
+
+      textarea {
+        min-height: 120px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
       }
 
       button {
-        padding: 12px 18px;
-        border-radius: 10px;
+        margin-top: 16px;
+        padding: 12px 16px;
+        border-radius: 12px;
         border: none;
-        background: #004fc4;
+        background: #2563eb;
         color: white;
-        font-size: 16px;
+        font-weight: 700;
+        font-size: 14px;
         cursor: pointer;
+      }
+
+      button.secondary {
+        background: #e2e8f0;
+        color: #0f172a;
+        margin-left: 10px;
+      }
+
+      .decision {
+        margin-top: 24px;
+        padding: 18px;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+      }
+
+      .decision.good {
+        border-color: #22c55e;
+        background: #ecfdf5;
+      }
+
+      .decision.bad {
+        border-color: #f97316;
+        background: #fff7ed;
+      }
+
+      .explain {
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.5;
+        margin-top: 8px;
+      }
+
+      .why {
+        margin-top: 40px;
+        background: #0f172a;
+        color: white;
+        padding: 28px;
+        border-radius: 18px;
+      }
+
+      .why h2 {
+        margin-top: 0;
+      }
+
+      .why p {
+        color: #cbd5e1;
+        line-height: 1.6;
       }
     </style>
   </head>
 
   <body>
+    <div class="container">
+      <h1>WikiSure™ Demo</h1>
+      <p class="subtitle">
+        This demo shows how governance decisions become explicit, reviewable and human-controlled —
+        without replacing platforms, insurers or regulators.
+      </p>
 
-    <!-- SCREEN 1 -->
-    <section class="screen active" data-step="1">
-      <div class="step-label">Step 1 of 5</div>
-      <h1>Draft a Meaning</h1>
-      <p>Create an initial definition everyone can react to.</p>
-      <button onclick="nextStep()">Next</button>
-    </section>
+      <!-- Fixed Context -->
+      <div class="context">
+        <div class="context-box">
+          <strong>Country</strong>
+          {fixedContext.country}
+        </div>
+        <div class="context-box">
+          <strong>Product</strong>
+          {fixedContext.product}
+        </div>
+        <div class="context-box">
+          <strong>Perspective</strong>
+          {fixedContext.perspective}
+        </div>
+      </div>
 
-    <!-- SCREEN 2 -->
-    <section class="screen" data-step="2">
-      <div class="step-label">Step 2 of 5</div>
-      <h1>Validate Meaning</h1>
-      <p>Check logic, consistency and risks.</p>
-      <button onclick="nextStep()">Next</button>
-    </section>
+      <!-- STEP 1 -->
+      <h2>1. Term</h2>
+      <input placeholder="e.g. Usage-Based Insurance Consent" />
 
-    <!-- SCREEN 3 -->
-    <section class="screen" data-step="3">
-      <div class="step-label">Step 3 of 5</div>
-      <h1>Add Perspectives</h1>
-      <p>OEM, Insurer and Platform perspectives are considered.</p>
-      <button onclick="nextStep()">Next</button>
-    </section>
+      <!-- STEP 2 -->
+      <h2>2. Canonical Definition</h2>
+      <textarea placeholder="The accepted baseline definition shared across partners."></textarea>
 
-    <!-- SCREEN 4 -->
-    <section class="screen" data-step="4">
-      <div class="step-label">Step 4 of 5</div>
-      <h1>AI can suggest.<br/>But it can’t decide.</h1>
-      <p>Without agreement, definitions remain opinions.</p>
-      <button onclick="nextStep()">Next</button>
-    </section>
+      <!-- STEP 3 -->
+      <h2>3. Proposed Change</h2>
+      <textarea placeholder="A platform or partner proposes a clarification or extension."></textarea>
 
-    <!-- SCREEN 5 -->
-    <section class="screen" data-step="5">
-      <div class="step-label">Step 5 of 5</div>
-      <h1>Shared Meaning</h1>
-      <p>This is what can be reused, trusted and referenced.</p>
-      <button onclick="nextStep()">Restart</button>
-    </section>
+      <!-- STEP 4 -->
+      <h2>4. Governance Decision</h2>
 
-    <script is:inline>
-      let currentStep = 1;
+      <button id="governBtn">Apply Governance</button>
+      <button class="secondary" id="resetBtn">Reset</button>
 
-      window.nextStep = () => {
-        // hide current
-        const current = document.querySelector(`[data-step="${currentStep}"]`);
-        if (current) current.classList.remove("active");
+      <div id="decisionBox" class="decision bad">
+        <strong>Status: Not Governed</strong>
+        <div class="explain">
+          The definition appears acceptable, but responsibilities, conditions and regulatory impact
+          remain implicit.
+        </div>
+      </div>
 
-        // calculate next
-        currentStep++;
-        if (currentStep > 5) currentStep = 1;
+      <!-- AHA -->
+      <div class="why">
+        <h2>Why this matters</h2>
+        <p>
+          WikiSure™ creates a shared semantic layer where decisions are explicit,
+          conditions are visible and responsibility stays with humans.
+        </p>
+        <p>
+          In this demo, you are looking at the world from a <strong>platform provider perspective</strong>.
+          The same governance logic later applies to insurers, MGAs, OEMs or regulators —
+          without changing the underlying systems.
+        </p>
+      </div>
+    </div>
 
-        // show next
-        const next = document.querySelector(`[data-step="${currentStep}"]`);
-        if (next) next.classList.add("active");
-      }
+    <script>
+      const governBtn = document.getElementById("governBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const decisionBox = document.getElementById("decisionBox");
+
+      governBtn.addEventListener("click", () => {
+        decisionBox.classList.remove("bad");
+        decisionBox.classList.add("good");
+        decisionBox.innerHTML = `
+          <strong>Status: Governed (Human-in-the-Loop)</strong>
+          <div class="explain">
+            The proposed definition is accepted <em>with conditions</em>.
+            Documentation updates and partner alignment are required.
+            A human reviewer remains accountable.
+          </div>
+        `;
+      });
+
+      resetBtn.addEventListener("click", () => {
+        decisionBox.classList.remove("good");
+        decisionBox.classList.add("bad");
+        decisionBox.innerHTML = `
+          <strong>Status: Not Governed</strong>
+          <div class="explain">
+            The definition appears acceptable, but responsibilities, conditions and regulatory impact
+            remain implicit.
+          </div>
+        `;
+      });
     </script>
-
   </body>
 </html>
