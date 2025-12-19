@@ -1,90 +1,167 @@
-<script>
-  const steps = [
-    {
-      title: "Why WikiSure™ Exists",
-      content:
-        "<p>Modern ecosystems move fast — but only when everyone means the same thing by the same words.</p>" +
-        "<p>WikiSure™ turns shared understanding into something teams can rely on: explicit, reviewable, and traceable.</p>" +
-        "<p>AI can assist — but accountability always stays with humans.</p>",
-    },
-    {
-      title: "Demo Context",
-      content:
-        "<p><strong>Country:</strong> Germany</p>" +
-        "<p><strong>Industry:</strong> Embedded Insurance</p>" +
-        "<p><strong>Perspective:</strong> Platform Provider</p>" +
-        "<p>This demo is intentionally fixed to keep the story clear.</p>",
-    },
-    {
-      title: "Term Selection",
-      content:
-        "<p>Choose a term that multiple partners use — and often interpret differently.</p>" +
-        "<p><em>Example:</em> Embedded Insurance Consent</p>",
-    },
-    {
-      title: "Definition",
-      content:
-        "<div class='definition-grid'>" +
-          "<div class='box'>" +
-            "<h3>Current Definition</h3>" +
-            "<p>Consent is assumed once a user proceeds with the embedded insurance flow.</p>" +
-          "</div>" +
-          "<div class='box highlight'>" +
-            "<h3>Proposed Definition</h3>" +
-            "<p>Consent is explicitly confirmed by the user through a dedicated opt-in action before coverage is activated.</p>" +
-          "</div>" +
-        "</div>",
-    },
-    {
-      title: "Validation",
-      content:
-        "<p>A quick governance check helps assess clarity and responsibility.</p>" +
-        "<ul>" +
-          "<li>Is the definition unambiguous?</li>" +
-          "<li>Does it shift responsibility?</li>" +
-          "<li>Does it introduce compliance risk?</li>" +
-        "</ul>" +
-        "<p><strong>Human-in-the-loop:</strong> the system assists — a person decides.</p>",
-    },
-    {
-      title: "Decision",
-      content:
-        "<p><strong>Outcome:</strong> PASS</p>" +
-        "<p>The proposed definition is clear, implementable, and ready to be used across partners.</p>" +
-        "<p>This decision — and its reasoning — is now traceable and reusable.</p>",
-    },
-  ];
+---
+const steps = [
+  { id: 1, title: "Why" },
+  { id: 2, title: "Context" },
+  { id: 3, title: "Term" },
+  { id: 4, title: "Definition" },
+  { id: 5, title: "Validation" },
+  { id: 6, title: "Decision" }
+];
 
-  let current = 0;
+let currentStep = 4; // ← Demo steht bewusst auf Definition
+---
 
-  const container = document.getElementById("step-container");
-  const label = document.getElementById("stepLabel");
-  const backBtn = document.getElementById("backBtn");
-  const nextBtn = document.getElementById("nextBtn");
+<section class="flow-container">
 
-  function render() {
-    const step = steps[current];
-    container.innerHTML =
-      "<h2>" + step.title + "</h2>" + step.content;
+  <!-- STEP TITLE -->
+  <h2 class="stepTitle">
+    Step {currentStep}: {steps.find(s => s.id === currentStep)?.title}
+  </h2>
 
-    label.textContent = "Step " + (current + 1) + " of " + steps.length;
-    backBtn.disabled = current === 0;
-    nextBtn.textContent = current === steps.length - 1 ? "Finish" : "Next";
+  <!-- STEP CONTENT -->
+  {currentStep === 4 && (
+    <div class="definition-grid">
+      <div class="definition-card baseline">
+        <div class="definition-label">Current Definition</div>
+        <div class="definition-text">
+          Consent is collected during the user onboarding process and stored
+          by the platform provider for later insurance activation.
+        </div>
+      </div>
+
+      <div class="definition-card proposed">
+        <div class="definition-label">Proposed Definition</div>
+        <div class="definition-text">
+          Consent is explicitly requested at the moment of insurance activation,
+          recorded with timestamp and scope, and shared with all involved parties
+          to ensure traceability and accountability.
+        </div>
+      </div>
+    </div>
+  )}
+
+  {currentStep === 6 && (
+    <div class="decision-box">
+      <strong>Decision Outcome</strong>
+      <p>
+        The proposed definition is accepted. Implementation may proceed with
+        shared understanding and clear responsibility.
+      </p>
+    </div>
+  )}
+
+  <!-- NAVIGATION -->
+  <div class="flow-nav">
+    <button disabled>
+      Back
+    </button>
+
+    <button class="primary">
+      Next
+    </button>
+  </div>
+
+</section>
+
+<style>
+/* ===== Container ===== */
+.flow-container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ===== Title ===== */
+.stepTitle {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+/* ===== Definition Grid ===== */
+.definition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 768px) {
+  .definition-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
+}
 
-  backBtn.onclick = function () {
-    if (current > 0) {
-      current--;
-      render();
-    }
-  };
+/* ===== Definition Cards ===== */
+.definition-card {
+  border-radius: 14px;
+  padding: 22px 24px 26px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
 
-  nextBtn.onclick = function () {
-    if (current < steps.length - 1) {
-      current++;
-      render();
-    }
-  };
+.definition-card.baseline {
+  background: #f5f5f7;
+}
 
-  render();
-</script>
+.definition-card.proposed {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.12);
+}
+
+/* ===== Labels & Text ===== */
+.definition-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6e6e73;
+  margin-bottom: 10px;
+}
+
+.definition-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1d1d1f;
+}
+
+/* ===== Decision ===== */
+.decision-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* ===== Navigation ===== */
+.flow-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.flow-nav button {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  cursor: pointer;
+}
+
+.flow-nav button.primary {
+  background: #0066ff;
+  color: #ffffff;
+}
+
+.flow-nav button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+</style>
