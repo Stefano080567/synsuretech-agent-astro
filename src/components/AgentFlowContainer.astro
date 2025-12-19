@@ -1,127 +1,91 @@
 ---
 /**
  * AgentFlowContainer.astro
- * UI-only demo flow for WikiSure™
- * Perspective: Platform Provider
- * Product: Embedded Insurance
- * Context: Germany (fixed, non-selectable)
+ * Demo-only step controller (UI only)
  */
 ---
 
-<section class="flow">
-
-  <h1>WikiSure™ Demo Flow</h1>
-  <p class="intro">
-    This demo shows a <strong>single governed semantic decision</strong>
-    from the perspective of a <strong>platform provider</strong>
-    operating an <strong>embedded insurance product</strong> in Germany.
-  </p>
-
-  <!-- STEP 1 -->
-  <div class="step">
-    <h2>1. Define</h2>
-    <p>
-      A key term is introduced that affects contracts, data exchange
-      and regulatory interpretation.
-    </p>
-    <div class="box">
-      <strong>Term:</strong> “Coverage Activation”
-      <br />
-      <em>Initial canonical definition is documented.</em>
-    </div>
-  </div>
-
-  <!-- STEP 2 -->
-  <div class="step">
-    <h2>2. Propose Change</h2>
-    <p>
-      A partner proposes a refined interpretation based on operational needs.
-    </p>
-    <div class="box">
-      <em>Proposed change:</em>
-      Coverage starts at vehicle handover instead of contract signature.
-    </div>
-  </div>
-
-  <!-- STEP 3 -->
-  <div class="step">
-    <h2>3. Review</h2>
-    <p>
-      Stakeholders review the proposal from different perspectives:
-    </p>
-    <ul>
-      <li>Platform operations</li>
-      <li>Insurance partner</li>
-      <li>Compliance & regulation</li>
-    </ul>
-    <p class="note">
-      AI may assist by highlighting conflicts — humans remain accountable.
-    </p>
-  </div>
-
-  <!-- STEP 4 -->
-  <div class="step">
-    <h2>4. Governance Decision</h2>
-    <p>
-      A governed decision is made with explicit conditions.
-    </p>
-    <div class="box decision">
-      ✔ Accepted with conditions<br />
-      • Documentation updated<br />
-      • Partner alignment required<br />
-      • Regulatory note attached
-    </div>
-  </div>
-
-  <!-- STEP 5 -->
-  <div class="step">
-    <h2>5. Outcome</h2>
-    <p>
-      The validated definition becomes reusable across systems,
-      contracts and AI processes.
-    </p>
-    <p class="highlight">
-      Shared meaning → Faster decisions → Clear accountability
-    </p>
-  </div>
-
-</section>
-
 <style>
-.flow {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 24px;
-}
+  .step { display: none; }
+  .step.active { display: block; }
 
-.intro {
-  color: #4b5563;
-  margin-bottom: 32px;
-}
+  .nav {
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-.step {
-  margin-bottom: 32px;
-}
+  button {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
 
-.box {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 12px;
-}
-
-.decision {
-  background: #ecfeff;
-  border-color: #67e8f9;
-}
-
-.note {
-  font-size: 14px;
-  color: #6b7280;
-}
-
-.highlight {
-  font-weight: 600;
-}
+  button.secondary {
+    background: #e5e7eb;
+    color: #111827;
+  }
 </style>
+
+<div id="flow">
+
+  <section class="step active">
+    <h2>Why WikiSure™</h2>
+    <p>Shared understanding before automation.</p>
+  </section>
+
+  <section class="step">
+    <h2>Definition</h2>
+    <p>Terms become explicit and governed.</p>
+  </section>
+
+  <section class="step">
+    <h2>Validation</h2>
+    <p>Humans stay accountable, AI assists.</p>
+  </section>
+
+  <section class="step">
+    <h2>Decision</h2>
+    <p>Outcomes are traceable and explainable.</p>
+  </section>
+
+  <section class="step">
+    <h2>Impact</h2>
+    <p>Less friction across ecosystems.</p>
+  </section>
+
+  <section class="step">
+    <h2>Done</h2>
+    <p>This is one moment in a larger system.</p>
+  </section>
+
+  <div class="nav">
+    <button id="prev" class="secondary">Back</button>
+    <button id="next">Next</button>
+  </div>
+</div>
+
+<script>
+  const steps = document.querySelectorAll(".step");
+  let current = 0;
+
+  const show = (i) => {
+    steps.forEach((s, idx) => {
+      s.classList.toggle("active", idx === i);
+    });
+  };
+
+  document.getElementById("next").onclick = () => {
+    if (current < steps.length - 1) current++;
+    show(current);
+  };
+
+  document.getElementById("prev").onclick = () => {
+    if (current > 0) current--;
+    show(current);
+  };
+</script>
