@@ -2,4 +2,19 @@
 import AgentFlowContainer from "../components/AgentFlowContainer.astro";
 ---
 
-<AgentFlowContainer />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WikiSure™ Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body style="margin:0; background:#fff;">
+    <!--
+      IMPORTANT:
+      client:load is REQUIRED.
+      Without this, the demo renders only Step 1 (static HTML).
+    -->
+    <AgentFlowContainer client:load />
+  </body>
+</html>

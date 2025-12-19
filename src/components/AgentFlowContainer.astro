@@ -1,255 +1,120 @@
 ---
-/**
- * AgentFlowContainer.astro
- * Canonical 6-step WikiSure™ Demo Flow
- * UI-only, Apple-clean, zero-risk
- */
+import { useState } from "preact/hooks";
 
 const steps = [
-  { id: "why", title: "Why WikiSure™ Exists" },
-  { id: "context", title: "Demo Context" },
-  { id: "term", title: "Term Selection" },
-  { id: "definition", title: "Definition" },
-  { id: "validation", title: "Validation" },
-  { id: "decision", title: "Decision" },
-];
+  {
+    id: 1,
+    title: "Why WikiSure™ Exists",
+    content: `
+Modern ecosystems move fast — but speed alone is not enough.
+Alignment, clarity and shared understanding determine whether partners can execute reliably.
 
-let currentStep = 0;
+WikiSure™ creates a governed space where meaning is explicit,
+decisions are visible, and accountability stays human.
+AI assists — humans stay in the driver’s seat.
+`,
+  },
+  {
+    id: 2,
+    title: "Demo Context",
+    content: `
+This demo is intentionally focused.
+
+• Geography: Germany  
+• Domain: Embedded Insurance  
+• Perspective: Platform Provider  
+
+One term. One decision. Fully traceable.
+`,
+  },
+  {
+    id: 3,
+    title: "Term Selection",
+    content: `
+Choose a term that multiple partners use —
+and often interpret differently.
+
+Example:
+“Embedded Insurance Consent”
+`,
+  },
+  {
+    id: 4,
+    title: "Definition",
+    content: `
+Below you see two versions of the same definition.
+
+LEFT: Existing baseline (what teams assume today)
+RIGHT: Proposed clarification (what teams align on)
+
+If two teams cannot implement the same behavior from a definition,
+it is not governed yet.
+`,
+  },
+  {
+    id: 5,
+    title: "Validation",
+    content: `
+Before a decision is finalized, it is reviewed.
+
+Signals:
+• PASS — clear and implementable
+• REVISE — acceptable, needs adjustment
+• FLAG — requires expert or regulatory review
+
+AI can highlight risks — humans decide.
+`,
+  },
+  {
+    id: 6,
+    title: "Decision",
+    content: `
+A decision is more than yes or no.
+
+It includes:
+• the chosen signal
+• a short rationale
+• next actions
+
+This is how shared understanding scales — safely.
+`,
+  },
+];
 ---
 
-<section class="flowContainer">
-  <nav class="flowNav">
-    {steps.map((step, index) => (
-      <span class={`navItem ${index === currentStep ? "active" : ""}`}>
-        {index + 1}. {step.title}
-      </span>
+<script>
+  console.log("✅ AgentFlowContainer hydrated");
+</script>
+
+<div class="flow">
+
+  <nav class="steps">
+    {steps.map(step => (
+      <span class="step">{step.id}. {step.title}</span>
     ))}
   </nav>
 
-  <div class="flowContent">
+  <Flow />
+</div>
 
-    {currentStep === 0 && (
-      <section class="step">
-        <h2>Why WikiSure™ Exists</h2>
-        <p>
-          Modern ecosystems move fast — but speed alone is not enough.
-          Alignment, clarity and shared understanding determine whether
-          partners can execute reliably across organizations.
-        </p>
-        <p>
-          WikiSure™ provides a governed layer where definitions are explicit,
-          decisions are documented, and responsibility remains human.
-          AI can assist — but people stay in the driver’s seat.
-        </p>
-      </section>
-    )}
+<script>
+  function Flow() {
+    const [index, setIndex] = useState(0);
+    const step = steps[index];
 
-    {currentStep === 1 && (
-      <section class="step">
-        <h2>Demo Context</h2>
-        <ul>
-          <li><strong>Country:</strong> Germany (fixed)</li>
-          <li><strong>Use case:</strong> Embedded Insurance</li>
-          <li><strong>Perspective:</strong> Platform Provider</li>
-        </ul>
-        <p class="hint">
-          The context is intentionally locked to keep the story focused and
-          comparable across audiences.
-        </p>
-      </section>
-    )}
+    return (
+      <section class="card">
+        <h1>{step.title}</h1>
+        <p style="white-space: pre-line">{step.content}</p>
 
-    {currentStep === 2 && (
-      <section class="step">
-        <h2>Term Selection</h2>
-        <p>
-          Select a term that is used by multiple parties but may be interpreted
-          differently across systems and teams.
-        </p>
-        <div class="exampleBox">
-          Example term: <strong>“Embedded Insurance Consent”</strong>
-        </div>
-      </section>
-    )}
+        <div class="controls">
+          <button
+            disabled={index === 0}
+            onClick={() => setIndex(i => i - 1)}
+          >
+            Back
+          </button>
 
-    {currentStep === 3 && (
-      <section class="step">
-        <h2>Definition</h2>
-
-        <div class="definitionGrid">
-          <div class="definitionBox current">
-            <h3>Current Definition (as used today)</h3>
-            <p class="sub">
-              The definition currently in use across systems and documents.
-            </p>
-            <p class="content">
-              Consent is assumed once the customer completes the checkout
-              process and proceeds with the embedded insurance offer.
-            </p>
-          </div>
-
-          <div class="definitionBox proposed">
-            <h3>Proposed Definition (governed draft)</h3>
-            <p class="sub">
-              A clarified version intended to be implemented consistently.
-            </p>
-            <p class="content">
-              Consent is explicitly given only after the customer has reviewed
-              coverage details and actively confirmed acceptance via a dedicated
-              confirmation action.
-            </p>
-          </div>
-        </div>
-
-        <p class="hint">
-          If two teams cannot implement the same behavior from a definition,
-          it is not governed yet.
-        </p>
-      </section>
-    )}
-
-    {currentStep === 4 && (
-      <section class="step">
-        <h2>Validation</h2>
-        <p>
-          The draft definition is reviewed using lightweight governance signals.
-        </p>
-        <ul>
-          <li><strong>PASS</strong> – clear and implementable</li>
-          <li><strong>REVISE</strong> – acceptable, minor changes needed</li>
-          <li><strong>FLAG</strong> – requires expert or regulatory review</li>
-        </ul>
-        <p class="hint">
-          This is the human-in-the-loop moment: the system assists, a person
-          remains accountable.
-        </p>
-      </section>
-    )}
-
-    {currentStep === 5 && (
-      <section class="step">
-        <h2>Decision</h2>
-        <p>
-          A decision is more than approval or rejection. It records the outcome,
-          the reasoning, and the next action.
-        </p>
-
-        <div class="decisionBox">
-          <strong>Governance Outcome:</strong> REVISE
-          <p>
-            The proposed definition is acceptable, but requires clarification
-            regarding customer notification timing before implementation.
-          </p>
-        </div>
-
-        <p class="hint">
-          Decisions become reusable assets — enabling faster, safer execution
-          across partners.
-        </p>
-      </section>
-    )}
-
-  </div>
-
-  <footer class="flowFooter">
-    <button
-      disabled={currentStep === 0}
-      onClick={() => currentStep--}
-    >
-      Back
-    </button>
-
-    <button
-      disabled={currentStep === steps.length - 1}
-      onClick={() => currentStep++}
-    >
-      Next
-    </button>
-  </footer>
-</section>
-
-<style>
-.flowContainer {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.flowNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.navItem.active {
-  color: #000;
-  font-weight: 600;
-}
-
-.step h2 {
-  margin-bottom: 1rem;
-}
-
-.definitionGrid {
-  display: grid;
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-.definitionBox {
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: #f6f6f7;
-}
-
-.definitionBox.proposed {
-  background: #eef3ff;
-}
-
-.sub {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.content {
-  margin-top: 0.5rem;
-}
-
-.exampleBox,
-.decisionBox {
-  padding: 1rem;
-  background: #f6f6f7;
-  border-radius: 10px;
-  margin: 1.5rem 0;
-}
-
-.hint {
-  font-size: 0.8rem;
-  color: #777;
-  margin-top: 1.5rem;
-}
-
-.flowFooter {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
-}
-
-button {
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  border: 1px solid #ccc;
-  background: white;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-</style>
+          <button
+            disabled={index === steps.length - 1}
+            onClick={() => setIndex(i
