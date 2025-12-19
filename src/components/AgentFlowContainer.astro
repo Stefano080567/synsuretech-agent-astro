@@ -1,65 +1,150 @@
 ---
-export interface Props {
-  title?: string;
-  description?: string;
-}
-
-const agents = [
-  { key: "A", label: "Draft Agent", description: "Erstellt erste Begriffsdefinitionen." },
-  { key: "B", label: "Validation Agent", description: "Prüft Logik, Konsistenz und Risiken." },
-  { key: "C", label: "Perspective Agent", description: "Erzeugt Perspektiven (OEM, Versicherer, API)." }
-];
+/**
+ * AgentFlowContainer.astro
+ * UI-only demo flow for WikiSure™
+ * No logic, no API calls, no dynamic state.
+ * Purpose: explain how shared meaning is aligned in Embedded Insurance.
+ */
 ---
 
 <style>
-  .container {
-    margin-top: 2rem;
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  .flow {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 24px;
   }
 
-  .card {
-    background: var(--st-surface);
-    color: var(--st-fg);
-    padding: 1.4rem;
-    border: 1px solid var(--st-border);
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: all 0.25s ease;
+  h2 {
+    margin-top: 48px;
+    margin-bottom: 12px;
+    font-size: 22px;
   }
-  .card:hover {
-    border-color: var(--st-accent);
-    box-shadow: 0 3px 14px rgba(0,0,0,0.12);
-    transform: translateY(-2px);
+
+  p {
+    color: #374151;
+    line-height: 1.6;
+    max-width: 760px;
+  }
+
+  .step {
+    margin-top: 36px;
+    padding: 24px;
+    border-radius: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
   }
 
   .label {
-    font-size: 0.8rem;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2563eb;
     text-transform: uppercase;
-    letter-spacing: 0.08rem;
-    opacity: 0.7;
-    margin-bottom: 0.4rem;
+    margin-bottom: 6px;
+    display: block;
   }
 
-  .title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 0.6rem;
+  .outcome {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px dashed #d1d5db;
   }
 
-  .desc {
-    font-size: 0.9rem;
-    opacity: 0.85;
+  .final {
+    margin-top: 56px;
+    padding: 32px;
+    border-radius: 20px;
+    background: #111827;
+    color: #f9fafb;
+  }
+
+  .final p {
+    color: #e5e7eb;
   }
 </style>
 
-<div class="container">
-  {agents.map(agent => (
-    <div class="card">
-      <div class="label">Agent {agent.key}</div>
-      <div class="title">{agent.label}</div>
-      <div class="desc">{agent.description}</div>
+<section class="flow">
+
+  <h2>Context</h2>
+  <p>
+    This example looks at Embedded Insurance in Germany.
+    Multiple parties collaborate to offer insurance within a digital product
+    or customer journey.
+  </p>
+
+  <div class="step">
+    <span class="label">Step 1 · Different viewpoints</span>
+    <p>
+      Insurers, platform operators, partners and compliance teams
+      often use the same terms — but mean slightly different things.
+    </p>
+    <p>
+      Each interpretation is shaped by role, responsibility
+      and regulatory exposure.
+    </p>
+  </div>
+
+  <div class="step">
+    <span class="label">Step 2 · Where friction starts</span>
+    <p>
+      These differences usually stay hidden.
+      They surface late — during contracts, audits, integrations or incidents.
+    </p>
+    <p>
+      That is when alignment becomes expensive.
+    </p>
+  </div>
+
+  <div class="step">
+    <span class="label">Step 3 · Making meaning explicit</span>
+    <p>
+      WikiSure™ makes these differences visible — before they turn into friction.
+    </p>
+    <p>
+      Terms are reviewed from multiple perspectives
+      and documented in a shared, transparent way.
+    </p>
+  </div>
+
+  <div class="step">
+    <span class="label">Step 4 · Structured review</span>
+    <p>
+      A structured review clarifies whether a definition
+      can be reused as-is, needs alignment,
+      or must be escalated.
+    </p>
+
+    <div class="outcome">
+      <strong>Illustrative outcome</strong>
+      <p>
+        The definition is acceptable with conditions.
+        Minor clarification is required before reuse.
+      </p>
     </div>
-  ))}
-</div>
+  </div>
+
+  <div class="step">
+    <span class="label">Step 5 · What changes</span>
+    <p>
+      Once meaning is aligned, teams move faster
+      and decisions become easier to justify.
+    </p>
+    <p>
+      Less back-and-forth. Fewer assumptions. Faster execution.
+    </p>
+  </div>
+
+  <div class="final">
+    <h2>Why this matters</h2>
+    <p>
+      WikiSure™ does not replace insurers, platforms or regulators.
+      It creates a shared semantic reference
+      that supports human judgment instead of bypassing it.
+    </p>
+    <p>
+      Alignment happens early — while change is still cheap.
+    </p>
+  </div>
+
+</section>
