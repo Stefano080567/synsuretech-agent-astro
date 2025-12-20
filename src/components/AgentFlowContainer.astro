@@ -1,175 +1,233 @@
 ---
 /*
-  ⚠️ DEMO-FROZEN FILE
-  This file is intentionally isolated.
-  DO NOT auto-generate, refactor, or replace.
+  DEMO – STABLE BASELINE
+  - No React
+  - No Lovable
+  - No external JS
+  - Pure Astro + Vanilla JS
 */
-
-const READ_ONLY = true;
-
-const steps = [
-  {
-    title: "Why WikiSure™ Exists",
-    body: `
-      <p>
-        Modern ecosystems move fast.
-        What makes them succeed is not more technology,
-        but shared clarity across partners.
-      </p>
-      <p>
-        WikiSure™ creates explicit, governed definitions
-        so teams can move faster — together.
-      </p>
-    `
-  },
-  {
-    title: "Demo Context",
-    body: `
-      <p>
-        This demo shows a single decision flow
-        from a platform provider perspective.
-      </p>
-      <p>
-        One term. One definition. One clear outcome.
-      </p>
-    `
-  },
-  {
-    title: "Term Selection",
-    body: `
-      <p>
-        A shared term is selected that multiple parties use.
-      </p>
-      <p>
-        Example: <strong>Embedded Insurance Consent</strong>
-      </p>
-    `
-  },
-  {
-    title: "Definition",
-    body: `
-      <p>
-        A baseline definition is compared with a refined proposal.
-      </p>
-      <p>
-        If two teams cannot implement the same behavior,
-        the definition is not ready.
-      </p>
-    `
-  },
-  {
-    title: "Validation",
-    body: `
-      <p>
-        The definition is reviewed for clarity,
-        responsibility and risk.
-      </p>
-      <p>
-        Humans stay accountable.
-        The system assists — it does not decide.
-      </p>
-    `
-  },
-  {
-    title: "Decision",
-    body: `
-      <p>
-        A governed decision is recorded
-        with rationale and next steps.
-      </p>
-      <p>
-        Shared understanding becomes executable.
-      </p>
-    `
-  }
-];
 ---
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  :root {
+    --brand-blue: #1f5cff;
+    --text-main: #111;
+    --bg-card: #fafafa;
+    --border-soft: #e6e6e6;
+  }
 
-  .flow-wrapper {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    max-width: 720px;
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Inter, Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 900px;
     margin: 80px auto;
     padding: 0 24px;
-    color: #0f172a;
+    text-align: center;
   }
 
-  h1 {
+  .card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  h2 {
     font-size: 28px;
-    font-weight: 600;
     margin-bottom: 16px;
+    color: var(--text-main);
   }
 
-  .step-body p {
-    font-size: 16px;
+  p {
+    font-size: 17px;
     line-height: 1.6;
-    margin-bottom: 12px;
+    color: #333;
   }
 
   .nav {
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
-    margin-top: 40px;
+    align-items: center;
   }
 
   button {
-    font-family: inherit;
-    font-size: 14px;
-    padding: 10px 18px;
-    border-radius: 8px;
-    border: 1px solid #1e40af;
-    background: #1e40af;
-    color: white;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 15px;
+    border: none;
     cursor: pointer;
   }
 
-  button[disabled] {
+  button.primary {
+    background: var(--brand-blue);
+    color: #fff;
+  }
+
+  button.secondary {
+    background: #f0f0f0;
+    color: #777;
+  }
+
+  button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
+
+  .dots {
+    margin-top: 24px;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    border-radius: 50%;
+    background: #ccc;
+  }
+
+  .dot.active {
+    background: var(--brand-blue);
+  }
 </style>
 
-<div class="flow-wrapper">
-  <h1 id="step-title"></h1>
-  <div class="step-body" id="step-body"></div>
+<div class="container">
+  <div class="card">
+    <div id="stepContent"></div>
 
-  <div class="nav">
-    <button id="prevBtn">Back</button>
-    <button id="nextBtn">Next</button>
+    <div class="nav">
+      <button id="backBtn" class="secondary">Back</button>
+
+      <button id="nextBtn" class="primary">Next</button>
+    </div>
+
+    <div class="dots" id="dots"></div>
   </div>
 </div>
 
 <script>
-  let index = 0;
+  const steps = [
+    {
+      title: "Why WikiSure™ Exists",
+      body: `
+        <p>
+          Modern ecosystems move fast — but speed alone is not enough.
+          Alignment, clarity and shared understanding determine whether
+          partners can execute reliably across organizations.
+        </p>
+        <p>
+          WikiSure™ makes key decisions explicit.
+          AI can assist — but humans stay in the driver’s seat.
+        </p>
+      `
+    },
+    {
+      title: "Demo Context",
+      body: `
+        <p>
+          This demo shows a governed definition flow in an
+          embedded insurance context.
+        </p>
+        <p>
+          Perspective: Platform provider working with insurers
+          and distribution partners.
+        </p>
+      `
+    },
+    {
+      title: "Term Selection",
+      body: `
+        <p>
+          Partners often use the same terms — but mean different things.
+        </p>
+        <p>
+          Example term: <strong>Embedded Insurance Consent</strong>
+        </p>
+      `
+    },
+    {
+      title: "Definition",
+      body: `
+        <p><strong>Current definition:</strong></p>
+        <p>
+          Consent is collected during onboarding and stored
+          for later insurance activation.
+        </p>
+        <br/>
+        <p><strong>Proposed definition:</strong></p>
+        <p>
+          Consent is explicitly requested at activation,
+          timestamped, scoped and shared with all partners.
+        </p>
+      `
+    },
+    {
+      title: "Validation",
+      body: `
+        <p>
+          The proposed definition is reviewed for clarity,
+          responsibility and compliance impact.
+        </p>
+        <p>
+          Outcome: <strong>PASS</strong>
+        </p>
+      `
+    },
+    {
+      title: "Decision",
+      body: `
+        <p>
+          The definition is now governed and reusable
+          across integrations and partners.
+        </p>
+        <p>
+          Decisions are documented. Ownership is clear.
+        </p>
+      `
+    }
+  ];
 
-  const titleEl = document.getElementById("step-title");
-  const bodyEl = document.getElementById("step-body");
-  const prevBtn = document.getElementById("prevBtn");
+  let current = 0;
+
+  const content = document.getElementById("stepContent");
+  const backBtn = document.getElementById("backBtn");
   const nextBtn = document.getElementById("nextBtn");
+  const dots = document.getElementById("dots");
 
   function render() {
-    titleEl.innerText = steps[index].title;
-    bodyEl.innerHTML = steps[index].body;
+    content.innerHTML = `
+      <h2>${steps[current].title}</h2>
+      ${steps[current].body}
+    `;
 
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === steps.length - 1;
+    backBtn.disabled = current === 0;
+    nextBtn.disabled = current === steps.length - 1;
+
+    dots.innerHTML = "";
+    steps.forEach((_, i) => {
+      const d = document.createElement("span");
+      d.className = "dot" + (i === current ? " active" : "");
+      dots.appendChild(d);
+    });
   }
 
-  prevBtn.addEventListener("click", () => {
-    if (index > 0) {
-      index--;
+  backBtn.onclick = () => {
+    if (current > 0) {
+      current--;
       render();
     }
-  });
+  };
 
-  nextBtn.addEventListener("click", () => {
-    if (index < steps.length - 1) {
-      index++;
+  nextBtn.onclick = () => {
+    if (current < steps.length - 1) {
+      current++;
       render();
     }
-  });
+  };
 
   render();
 </script>
