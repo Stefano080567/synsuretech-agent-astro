@@ -14,24 +14,25 @@ const steps = [
       <h2>Why WikiSure™ Exists</h2>
       <p>
         Modern ecosystems move fast — but speed alone is not enough.
-        Clear alignment and shared understanding are what allow partners
-        to execute reliably across organizations.
+        Alignment, clarity and shared understanding determine whether
+        partners can execute reliably across organizations.
       </p>
       <p>
-        WikiSure™ provides a structured way to make decisions explicit,
-        visible, and reusable — with humans remaining in the driver’s seat.
+        WikiSure™ exists to turn shared understanding into an explicit,
+        reviewable and owned decision layer — with humans staying in
+        the driver’s seat.
       </p>
     `
   },
   {
-    title: "Context",
+    title: "Demo Context",
     body: `
       <h2>Demo Context</h2>
       <p>
-        This demo is intentionally focused:
+        This demo is intentionally focused and fixed:
       </p>
       <ul>
-        <li>Market: Germany</li>
+        <li>Country: Germany</li>
         <li>Use case: Embedded Insurance</li>
         <li>Perspective: Platform Provider</li>
       </ul>
@@ -41,15 +42,16 @@ const steps = [
     `
   },
   {
-    title: "Term",
+    title: "Term Selection",
     body: `
-      <h2>Selected Term</h2>
+      <h2>Term Selection</h2>
       <p>
-        The term used across multiple partners:
+        Choose a term that multiple partners rely on — and often
+        interpret differently.
       </p>
-      <strong>“Embedded Insurance Consent”</strong>
       <p>
-        Same words — different interpretations.
+        Example:
+        <strong>Embedded Insurance Consent</strong>
       </p>
     `
   },
@@ -57,20 +59,21 @@ const steps = [
     title: "Definition",
     body: `
       <h2>Definition</h2>
+
       <div class="definition-grid">
         <div class="definition-box">
-          <h3>Current Definition</h3>
+          <h3>Baseline Definition</h3>
           <p>
-            Consent is obtained during the digital checkout process
-            when the user selects an insurance option.
+            The current wording used across partners today.
+            Often implicit, assumed, and inconsistently implemented.
           </p>
         </div>
 
         <div class="definition-box highlight">
           <h3>Proposed Definition</h3>
           <p>
-            Consent is explicitly confirmed through a dedicated interaction,
-            recorded separately, and traceable across all partners.
+            A clarified, implementation-ready definition that makes
+            responsibilities, boundaries and intent explicit.
           </p>
         </div>
       </div>
@@ -81,107 +84,116 @@ const steps = [
     body: `
       <h2>Validation</h2>
       <p>
-        The definition is reviewed for clarity, responsibility,
-        and implementation impact.
+        Before execution, the definition is reviewed:
       </p>
       <ul>
-        <li>Is the wording unambiguous?</li>
-        <li>Can all partners implement the same behavior?</li>
-        <li>Does responsibility remain clear?</li>
+        <li>Is it unambiguous?</li>
+        <li>Does it shift responsibility?</li>
+        <li>Does it introduce compliance risk?</li>
       </ul>
       <p>
-        Human review remains the final authority.
+        The system assists — but a human reviewer owns the outcome.
       </p>
     `
   },
   {
     title: "Decision",
     body: `
-      <h2>Governed Decision</h2>
+      <h2>Decision</h2>
       <p>
-        Outcome:
+        A governed decision is more than “yes” or “no”.
       </p>
-      <strong class="decision-pass">PASS</strong>
       <p>
-        The definition is accepted and can now be reused consistently
-        across products and partners.
+        It captures:
+      </p>
+      <ul>
+        <li>The outcome</li>
+        <li>The rationale</li>
+        <li>The next action</li>
+      </ul>
+      <p>
+        This makes execution faster, safer and repeatable across partners.
       </p>
     `
   }
 ];
-
-let currentStep = 0;
 ---
 
-<section class="flow">
-  <header class="flow-header">
-    <span class="badge">Demo · Read-Only</span>
-    <h1>{steps[currentStep].title}</h1>
-  </header>
+<section class="flow-shell">
+  <div id="flow-content"></div>
 
-  <article class="flow-body" set:html={steps[currentStep].body}></article>
-
-  <footer class="flow-nav">
-    <button disabled>
-      Back
-    </button>
-
-    <span class="step-indicator">
-      Step {currentStep + 1} / {steps.length}
-    </span>
-
-    <button disabled>
-      Next
-    </button>
-  </footer>
+  <div class="nav-bar">
+    <button id="prevBtn">Back</button>
+    <span id="stepCounter"></span>
+    <button id="nextBtn">Next</button>
+  </div>
 </section>
+
+<script>
+  let currentStep = 0;
+
+  const contentEl = document.getElementById("flow-content");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const counterEl = document.getElementById("stepCounter");
+
+  function renderStep() {
+    const step = steps[currentStep];
+    contentEl.innerHTML = step.body;
+    counterEl.textContent = `${currentStep + 1} / ${steps.length}`;
+
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.disabled = currentStep === steps.length - 1;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (READ_ONLY && currentStep > 0) {
+      currentStep--;
+      renderStep();
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (READ_ONLY && currentStep < steps.length - 1) {
+      currentStep++;
+      renderStep();
+    }
+  });
+
+  renderStep();
+</script>
 
 <style>
   :root {
-    --blue: #1f4fd8;
-    --text: #0f172a;
-    --muted: #64748b;
-    --bg: #ffffff;
-    --border: #e5e7eb;
+    --brand-blue: #0a5cff;
   }
 
-  .flow {
+  .flow-shell {
     max-width: 820px;
-    margin: 64px auto;
-    padding: 48px;
-    background: var(--bg);
-    border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.06);
+    margin: 80px auto;
+    padding: 0 24px;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
-                 "Segoe UI", Helvetica, Arial, sans-serif;
-    color: var(--text);
+      "Helvetica Neue", Arial, sans-serif;
+    color: #111;
   }
 
-  .flow-header h1 {
+  h2 {
     font-size: 32px;
-    margin: 16px 0 32px;
-  }
-
-  .badge {
-    display: inline-block;
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: rgba(31,79,216,.1);
-    color: var(--blue);
-    font-weight: 600;
-  }
-
-  .flow-body h2 {
-    font-size: 24px;
     margin-bottom: 16px;
   }
 
-  .flow-body p,
-  .flow-body li {
+  h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  p, li {
     font-size: 18px;
     line-height: 1.6;
-    color: var(--text);
+  }
+
+  ul {
+    margin-left: 20px;
   }
 
   .definition-grid {
@@ -191,49 +203,47 @@ let currentStep = 0;
     margin-top: 24px;
   }
 
-  @media (min-width: 720px) {
-    .definition-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
   .definition-box {
-    padding: 24px;
+    border: 1px solid #e5e5e5;
     border-radius: 14px;
-    border: 1px solid var(--border);
-    background: #f9fafb;
+    padding: 20px;
+    background: #fafafa;
   }
 
   .definition-box.highlight {
-    border-color: var(--blue);
-    background: rgba(31,79,216,.04);
+    border-color: var(--brand-blue);
+    background: #f4f8ff;
   }
 
-  .decision-pass {
-    color: var(--blue);
-    font-size: 22px;
-    font-weight: 700;
-  }
-
-  .flow-nav {
+  .nav-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 48px;
   }
 
-  .flow-nav button {
-    padding: 12px 22px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: #f1f5f9;
+  button {
     font-size: 16px;
-    cursor: not-allowed;
-    opacity: .45;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
   }
 
-  .step-indicator {
-    font-size: 15px;
-    color: var(--muted);
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  #stepCounter {
+    font-size: 14px;
+    color: #666;
+  }
+
+  @media (min-width: 700px) {
+    .definition-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>
