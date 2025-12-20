@@ -1,167 +1,218 @@
 ---
 const steps = [
-  { id: 1, title: "Why" },
-  { id: 2, title: "Context" },
-  { id: 3, title: "Term" },
-  { id: 4, title: "Definition" },
-  { id: 5, title: "Validation" },
-  { id: 6, title: "Decision" }
+  {
+    title: "Why WikiSure™ Exists",
+    body: `
+      <h2>Why WikiSure™ Exists</h2>
+      <p>
+        Modern ecosystems move fast — but speed alone is not enough.
+        Alignment, clarity and shared understanding determine whether
+        partners can execute reliably across organizations.
+      </p>
+      <p>
+        WikiSure™ exists to make meaning explicit.
+        AI can assist — but humans stay in the driver’s seat.
+      </p>
+    `
+  },
+  {
+    title: "Demo Context",
+    body: `
+      <h2>Demo Context</h2>
+      <p>
+        This demo shows a single governed definition across multiple partners
+        in an embedded insurance ecosystem.
+      </p>
+      <p>
+        Perspective: Platform Provider<br/>
+        Region: Germany<br/>
+        Scope: One term, one decision
+      </p>
+    `
+  },
+  {
+    title: "Term Selection",
+    body: `
+      <h2>Term Selection</h2>
+      <p>
+        Partners often use the same term — but mean different things.
+      </p>
+      <p><strong>Selected term:</strong> Consent</p>
+      <p>
+        WikiSure focuses on terms that directly affect responsibility,
+        compliance and execution.
+      </p>
+    `
+  },
+  {
+    title: "Definition",
+    body: `
+      <h2>Step 4: Definition</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Current Definition</h4>
+          <p>
+            Consent is collected during the user onboarding process
+            and stored by the platform provider for later insurance activation.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Proposed Definition</h4>
+          <p>
+            Consent is explicitly requested at the moment of insurance activation,
+            recorded with timestamp and scope, and shared with all involved parties
+            to ensure traceability and accountability.
+          </p>
+        </div>
+      </div>
+    `
+  },
+  {
+    title: "Validation",
+    body: `
+      <h2>Validation</h2>
+      <p>
+        Before a definition becomes operational, it is validated.
+      </p>
+      <ul>
+        <li>Is the definition unambiguous?</li>
+        <li>Are responsibilities clearly assigned?</li>
+        <li>Does it introduce regulatory or compliance risk?</li>
+      </ul>
+      <p>
+        AI can assist — but a human reviewer owns the decision.
+      </p>
+    `
+  },
+  {
+    title: "Decision",
+    body: `
+      <h2>Decision</h2>
+      <p>
+        The outcome is not just “approved” or “rejected”.
+      </p>
+      <p>
+        A governed decision includes:
+      </p>
+      <ul>
+        <li>The agreed definition</li>
+        <li>The validation signal</li>
+        <li>The rationale behind the decision</li>
+      </ul>
+      <p>
+        This shared understanding enables faster, safer execution across partners.
+      </p>
+    `
+  }
 ];
-
-let currentStep = 4; // ← Demo steht bewusst auf Definition
 ---
 
-<section class="flow-container">
+<div id="flow">
+  {steps.map((step, i) => (
+    <section class="step" data-step={i}>
+      <div class="card-wrapper" set:html={step.body} />
+    </section>
+  ))}
 
-  <!-- STEP TITLE -->
-  <h2 class="stepTitle">
-    Step {currentStep}: {steps.find(s => s.id === currentStep)?.title}
-  </h2>
-
-  <!-- STEP CONTENT -->
-  {currentStep === 4 && (
-    <div class="definition-grid">
-      <div class="definition-card baseline">
-        <div class="definition-label">Current Definition</div>
-        <div class="definition-text">
-          Consent is collected during the user onboarding process and stored
-          by the platform provider for later insurance activation.
-        </div>
-      </div>
-
-      <div class="definition-card proposed">
-        <div class="definition-label">Proposed Definition</div>
-        <div class="definition-text">
-          Consent is explicitly requested at the moment of insurance activation,
-          recorded with timestamp and scope, and shared with all involved parties
-          to ensure traceability and accountability.
-        </div>
-      </div>
-    </div>
-  )}
-
-  {currentStep === 6 && (
-    <div class="decision-box">
-      <strong>Decision Outcome</strong>
-      <p>
-        The proposed definition is accepted. Implementation may proceed with
-        shared understanding and clear responsibility.
-      </p>
-    </div>
-  )}
-
-  <!-- NAVIGATION -->
-  <div class="flow-nav">
-    <button disabled>
-      Back
-    </button>
-
-    <button class="primary">
-      Next
-    </button>
+  <div class="nav">
+    <button id="back">Back</button>
+    <button id="next">Next</button>
   </div>
 
-</section>
+  <div class="dots">
+    {steps.map((_, i) => (
+      <span class="dot" data-dot={i}></span>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  let current = 0;
+  const steps = document.querySelectorAll(".step");
+  const dots = document.querySelectorAll(".dot");
+  const back = document.getElementById("back");
+  const next = document.getElementById("next");
+
+  function update() {
+    steps.forEach((s, i) =>
+      s.style.display = i === current ? "block" : "none"
+    );
+    dots.forEach((d, i) =>
+      d.classList.toggle("active", i === current)
+    );
+    back.disabled = current === 0;
+    next.disabled = current === steps.length - 1;
+  }
+
+  back.onclick = () => {
+    if (current > 0) current--;
+    update();
+  };
+
+  next.onclick = () => {
+    if (current < steps.length - 1) current++;
+    update();
+  };
+
+  update();
+</script>
 
 <style>
-/* ===== Container ===== */
-.flow-container {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 40px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+#flow {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 0 24px;
 }
 
-/* ===== Title ===== */
-.stepTitle {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #1d1d1f;
+.step {
+  display: none;
 }
 
-/* ===== Definition Grid ===== */
-.definition-grid {
+.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 24px;
 }
 
-@media (max-width: 768px) {
-  .definition-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+.card, .card-wrapper {
+  padding: 28px;
+  border-radius: 18px;
+  background: #f7f7f8;
 }
 
-/* ===== Definition Cards ===== */
-.definition-card {
-  border-radius: 14px;
-  padding: 22px 24px 26px;
-  border: 1px solid rgba(0,0,0,0.08);
-}
-
-.definition-card.baseline {
-  background: #f5f5f7;
-}
-
-.definition-card.proposed {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.12);
-}
-
-/* ===== Labels & Text ===== */
-.definition-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6e6e73;
-  margin-bottom: 10px;
-}
-
-.definition-text {
-  font-size: 15px;
-  line-height: 1.5;
-  color: #1d1d1f;
-}
-
-/* ===== Decision ===== */
-.decision-box {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid rgba(0,0,0,0.1);
-}
-
-/* ===== Navigation ===== */
-.flow-nav {
+.nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 48px;
 }
 
-.flow-nav button {
-  appearance: none;
-  border: none;
+button {
+  padding: 10px 22px;
   border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
-  background: #f5f5f7;
-  color: #1d1d1f;
-  cursor: pointer;
+  border: none;
+  background: #2563eb;
+  color: white;
 }
 
-.flow-nav button.primary {
-  background: #0066ff;
-  color: #ffffff;
+button:disabled {
+  opacity: 0.35;
 }
 
-.flow-nav button:disabled {
-  opacity: 0.4;
-  cursor: default;
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.dot.active {
+  background: #2563eb;
 }
 </style>
