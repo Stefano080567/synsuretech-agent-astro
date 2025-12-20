@@ -3,7 +3,11 @@
   ⚠️ DEMO-FROZEN FILE
   This file is intentionally isolated.
   DO NOT auto-generate, refactor, or replace.
+  Any change must be explicit and manual.
 */
+
+const READ_ONLY = true;
+
 const steps = [
   {
     title: "Why WikiSure™ Exists",
@@ -11,12 +15,12 @@ const steps = [
       <h2>Why WikiSure™ Exists</h2>
       <p>
         Modern ecosystems move fast — but speed alone is not enough.
-        Alignment, clarity and shared understanding determine whether
-        partners can execute reliably across organizations.
+        Alignment and shared understanding determine whether partners
+        can execute reliably across organizations.
       </p>
       <p>
-        WikiSure™ exists to make meaning explicit.
-        AI can assist — but humans stay in the driver’s seat.
+        WikiSure™ exists to make meaning explicit, decisions traceable,
+        and collaboration repeatable — with humans staying in control.
       </p>
     `
   },
@@ -25,14 +29,14 @@ const steps = [
     body: `
       <h2>Demo Context</h2>
       <p>
-        This demo shows a single governed definition across multiple partners
-        in an embedded insurance ecosystem.
+        This demo shows a single, focused moment:
+        one shared term, one decision, one accountable outcome.
       </p>
-      <p>
-        Perspective: Platform Provider<br/>
-        Region: Germany<br/>
-        Scope: One term, one decision
-      </p>
+      <ul>
+        <li><strong>Market:</strong> Germany</li>
+        <li><strong>Scenario:</strong> Embedded Insurance</li>
+        <li><strong>Perspective:</strong> Platform Provider</li>
+      </ul>
     `
   },
   {
@@ -40,33 +44,33 @@ const steps = [
     body: `
       <h2>Term Selection</h2>
       <p>
-        Partners often use the same term — but mean different things.
+        Choose a term that multiple partners use — but may interpret differently.
       </p>
-      <p><strong>Selected term:</strong> Consent</p>
       <p>
-        WikiSure focuses on terms that directly affect responsibility,
-        compliance and execution.
+        Example: <strong>Embedded Insurance Consent</strong>
+      </p>
+      <p>
+        This is where alignment usually starts to break — or becomes governed.
       </p>
     `
   },
   {
     title: "Definition",
     body: `
-      <h2>Step 4: Definition</h2>
-      <div class="grid">
-        <div class="card">
-          <h4>Current Definition</h4>
+      <h2>Definition</h2>
+      <div class="definitionGrid">
+        <div class="definitionBox">
+          <h3>Current Definition</h3>
           <p>
-            Consent is collected during the user onboarding process
-            and stored by the platform provider for later insurance activation.
+            Consent is obtained somewhere during the customer journey.
           </p>
         </div>
-        <div class="card">
-          <h4>Proposed Definition</h4>
+
+        <div class="definitionBox highlighted">
+          <h3>Proposed Definition</h3>
           <p>
-            Consent is explicitly requested at the moment of insurance activation,
-            recorded with timestamp and scope, and shared with all involved parties
-            to ensure traceability and accountability.
+            Consent is explicitly collected before any insurance-related
+            data is shared or processed, with a clear audit trail.
           </p>
         </div>
       </div>
@@ -77,15 +81,15 @@ const steps = [
     body: `
       <h2>Validation</h2>
       <p>
-        Before a definition becomes operational, it is validated.
+        The system supports the review — but a human owns the decision.
       </p>
       <ul>
-        <li>Is the definition unambiguous?</li>
-        <li>Are responsibilities clearly assigned?</li>
-        <li>Does it introduce regulatory or compliance risk?</li>
+        <li>Does this introduce ambiguity?</li>
+        <li>Does responsibility shift?</li>
+        <li>Does this create compliance risk?</li>
       </ul>
       <p>
-        AI can assist — but a human reviewer owns the decision.
+        Outcome signals: <strong>PASS · REVISE · FLAG</strong>
       </p>
     `
   },
@@ -94,130 +98,141 @@ const steps = [
     body: `
       <h2>Decision</h2>
       <p>
-        The outcome is not just “approved” or “rejected”.
+        A governed outcome is more than yes or no.
       </p>
       <p>
-        A governed decision includes:
+        It captures the decision, the reasoning, and the next action —
+        so teams can implement faster and with confidence.
       </p>
-      <ul>
-        <li>The agreed definition</li>
-        <li>The validation signal</li>
-        <li>The rationale behind the decision</li>
-      </ul>
       <p>
-        This shared understanding enables faster, safer execution across partners.
+        This is how shared understanding turns into execution.
       </p>
     `
   }
 ];
 ---
 
-<div id="flow">
-  {steps.map((step, i) => (
-    <section class="step" data-step={i}>
-      <div class="card-wrapper" set:html={step.body} />
-    </section>
-  ))}
+<div class="agentFlow">
+  <div id="stepContainer" class="stepContainer"></div>
 
   <div class="nav">
-    <button id="back">Back</button>
-    <button id="next">Next</button>
-  </div>
-
-  <div class="dots">
-    {steps.map((_, i) => (
-      <span class="dot" data-dot={i}></span>
-    ))}
+    <button id="prevBtn">Back</button>
+    <span id="stepIndicator"></span>
+    <button id="nextBtn">Next</button>
   </div>
 </div>
 
-<script is:inline>
-  let current = 0;
-  const steps = document.querySelectorAll(".step");
-  const dots = document.querySelectorAll(".dot");
-  const back = document.getElementById("back");
-  const next = document.getElementById("next");
+<script>
+  let currentStep = 0;
+  const steps = JSON.parse(JSON.stringify({steps}));
 
-  function update() {
-    steps.forEach((s, i) =>
-      s.style.display = i === current ? "block" : "none"
-    );
-    dots.forEach((d, i) =>
-      d.classList.toggle("active", i === current)
-    );
-    back.disabled = current === 0;
-    next.disabled = current === steps.length - 1;
+  const container = document.getElementById("stepContainer");
+  const indicator = document.getElementById("stepIndicator");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function renderStep() {
+    const step = steps[currentStep];
+    container.innerHTML = step.body;
+    indicator.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.disabled = currentStep === steps.length - 1;
   }
 
-  back.onclick = () => {
-    if (current > 0) current--;
-    update();
-  };
+  prevBtn.addEventListener("click", () => {
+    if (currentStep > 0) {
+      currentStep--;
+      renderStep();
+    }
+  });
 
-  next.onclick = () => {
-    if (current < steps.length - 1) current++;
-    update();
-  };
+  nextBtn.addEventListener("click", () => {
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      renderStep();
+    }
+  });
 
-  update();
+  renderStep();
 </script>
 
 <style>
-#flow {
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 0 24px;
-}
+  .agentFlow {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
 
-.step {
-  display: none;
-}
+  h2 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
+  h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
 
-.card, .card-wrapper {
-  padding: 28px;
-  border-radius: 18px;
-  background: #f7f7f8;
-}
+  p, li {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+  }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 48px;
-}
+  ul {
+    padding-left: 20px;
+  }
 
-button {
-  padding: 10px 22px;
-  border-radius: 999px;
-  border: none;
-  background: #2563eb;
-  color: white;
-}
+  .definitionGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 24px;
+  }
 
-button:disabled {
-  opacity: 0.35;
-}
+  @media (min-width: 700px) {
+    .definitionGrid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 24px;
-}
+  .definitionBox {
+    padding: 20px;
+    border-radius: 12px;
+    background: #f5f5f7;
+  }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ddd;
-}
+  .definitionBox.highlighted {
+    background: #eef4ff;
+    border: 1px solid #c7dcff;
+  }
 
-.dot.active {
-  background: #2563eb;
-}
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  button {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: none;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  #stepIndicator {
+    font-size: 14px;
+    color: #666;
+  }
 </style>
