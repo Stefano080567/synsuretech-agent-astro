@@ -5,25 +5,14 @@ import AgentFlowContainer from "../components/AgentFlowContainer.astro";
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <title>WikiSure™ Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
 
   <body>
     <main id="demo-root">
       <AgentFlowContainer />
     </main>
-
-    <!-- Client-side state bootstrap -->
-    <script>
-      // Defensive bootstrap to avoid empty render
-      document.addEventListener("DOMContentLoaded", () => {
-        const root = document.getElementById("demo-root");
-        if (!root || root.innerHTML.trim() === "") {
-          location.reload();
-        }
-      });
-    </script>
   </body>
 </html>
