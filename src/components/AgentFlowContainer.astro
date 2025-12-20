@@ -1,136 +1,31 @@
 ---
 /*
   ⚠️ DEMO-FROZEN FILE
-  This file is intentionally isolated.
-  DO NOT auto-generate, refactor, or replace.
+  Client-side only.
+  No external state.
 */
-
-export const DEMO_FROZEN = true;
-
-// ---- DEMO STATE (LOCAL ONLY, NO EXTERNAL DEPENDENCIES) ----
-let currentStep = 0;
-
-// ---- DEMO CONTENT (NO EMPTY STEPS ALLOWED) ----
-const steps = [
-  {
-    title: "Why WikiSure™ Exists",
-    body: `
-      <h2>Why WikiSure™ Exists</h2>
-      <p>
-        Modern ecosystems move fast — but speed alone is not enough.
-        Alignment, clarity and shared understanding determine whether
-        partners can execute reliably across organizations.
-      </p>
-      <p>
-        WikiSure™ makes meaning explicit.
-        AI can assist — humans stay in the driver’s seat.
-      </p>
-    `
-  },
-  {
-    title: "Demo Context",
-    body: `
-      <h2>Demo Context</h2>
-      <p>
-        This demo illustrates a governed definition flow across partners.
-        It shows how shared understanding can be made explicit,
-        reviewed, and confirmed — step by step.
-      </p>
-    `
-  },
-  {
-    title: "Term Selection",
-    body: `
-      <h2>Term Selection</h2>
-      <p>
-        A single term can mean different things to different partners.
-        The demo starts by selecting one shared term
-        that requires alignment.
-      </p>
-    `
-  },
-  {
-    title: "Definition",
-    body: `
-      <h2>Definition</h2>
-      <div class="definition-grid">
-        <div class="definition-box">
-          <h3>Current Definition</h3>
-          <p>
-            Consent is collected during onboarding and stored
-            by the platform provider.
-          </p>
-        </div>
-        <div class="definition-box highlight">
-          <h3>Proposed Definition</h3>
-          <p>
-            Consent is explicitly requested at activation,
-            timestamped, scoped, and shared with all parties.
-          </p>
-        </div>
-      </div>
-    `
-  },
-  {
-    title: "Validation",
-    body: `
-      <h2>Validation</h2>
-      <p>
-        Stakeholders review the proposed definition.
-        Differences are visible, discussable,
-        and resolved before execution.
-      </p>
-    `
-  },
-  {
-    title: "Decision",
-    body: `
-      <h2>Decision</h2>
-      <p>
-        The final definition is confirmed.
-        Accountability is explicit.
-        Execution can proceed with confidence.
-      </p>
-    `
-  }
-];
-
-// ---- HARD SAFETY GUARD ----
-const safeStep = steps[currentStep];
-if (!safeStep || !safeStep.body) {
-  throw new Error("DEMO BROKEN: step content missing");
-}
 ---
 
 <style>
   :root {
-    --synsuretech-blue: #2563eb;
-    --text-primary: #0f172a;
-    --bg-soft: #f8fafc;
-    --card-bg: #ffffff;
-    --border-soft: #e5e7eb;
+    --blue: #2563eb;
+    --text: #0f172a;
+    --soft: #f8fafc;
+    --border: #e5e7eb;
   }
 
   .container {
     max-width: 880px;
     margin: 80px auto;
     padding: 40px;
-    background: var(--card-bg);
+    background: white;
     border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-    color: var(--text-primary);
+    box-shadow: 0 20px 40px rgba(0,0,0,.06);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
   }
 
-  h2 {
-    font-size: 28px;
-    margin-bottom: 16px;
-  }
-
-  p {
-    font-size: 18px;
-    line-height: 1.6;
-  }
+  h2 { font-size: 28px; margin-bottom: 16px; }
+  p  { font-size: 18px; line-height: 1.6; }
 
   .definition-grid {
     display: grid;
@@ -139,15 +34,15 @@ if (!safeStep || !safeStep.body) {
     margin-top: 24px;
   }
 
-  .definition-box {
+  .box {
     padding: 24px;
     border-radius: 14px;
-    background: var(--bg-soft);
-    border: 1px solid var(--border-soft);
+    background: var(--soft);
+    border: 1px solid var(--border);
   }
 
-  .definition-box.highlight {
-    border-color: var(--synsuretech-blue);
+  .box.highlight {
+    border-color: var(--blue);
   }
 
   .nav {
@@ -159,25 +54,15 @@ if (!safeStep || !safeStep.body) {
   button {
     padding: 12px 24px;
     border-radius: 999px;
-    font-size: 16px;
     border: none;
+    font-size: 16px;
     cursor: pointer;
   }
 
-  button.primary {
-    background: var(--synsuretech-blue);
-    color: white;
-  }
+  .primary { background: var(--blue); color: white; }
+  .secondary { background: #e5e7eb; color: #475569; }
 
-  button.secondary {
-    background: #e5e7eb;
-    color: #475569;
-  }
-
-  button:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
+  button:disabled { opacity: .4; cursor: default; }
 
   .exit {
     margin-top: 32px;
@@ -185,31 +70,18 @@ if (!safeStep || !safeStep.body) {
   }
 
   .exit a {
-    color: var(--synsuretech-blue);
-    text-decoration: none;
     font-size: 14px;
+    color: var(--blue);
+    text-decoration: none;
   }
 </style>
 
 <div class="container">
-  <div set:html={safeStep.body}></div>
+  <div id="content"></div>
 
   <div class="nav">
-    <button
-      class="secondary"
-      disabled={currentStep === 0}
-      on:click={() => currentStep--}
-    >
-      Back
-    </button>
-
-    <button
-      class="primary"
-      disabled={currentStep === steps.length - 1}
-      on:click={() => currentStep++}
-    >
-      Next
-    </button>
+    <button id="back" class="secondary">Back</button>
+    <button id="next" class="primary">Next</button>
   </div>
 
   <div class="exit">
@@ -218,3 +90,72 @@ if (!safeStep || !safeStep.body) {
     </a>
   </div>
 </div>
+
+<script client:load>
+  const steps = [
+    `
+      <h2>Why WikiSure™ Exists</h2>
+      <p>
+        Modern ecosystems move fast — but speed alone is not enough.
+        Alignment and clarity enable execution.
+      </p>
+      <p>
+        AI assists — humans stay in the driver’s seat.
+      </p>
+    `,
+    `
+      <h2>Demo Context</h2>
+      <p>
+        This demo shows a governed definition flow across partners.
+      </p>
+    `,
+    `
+      <h2>Term Selection</h2>
+      <p>
+        One shared term. Multiple interpretations.
+      </p>
+    `,
+    `
+      <h2>Definition</h2>
+      <div class="definition-grid">
+        <div class="box">
+          <h3>Current Definition</h3>
+          <p>Consent is collected during onboarding.</p>
+        </div>
+        <div class="box highlight">
+          <h3>Proposed Definition</h3>
+          <p>Consent is explicitly requested and traceable.</p>
+        </div>
+      </div>
+    `,
+    `
+      <h2>Validation</h2>
+      <p>
+        Differences are reviewed before execution.
+      </p>
+    `,
+    `
+      <h2>Decision</h2>
+      <p>
+        One shared definition. Clear accountability.
+      </p>
+    `
+  ];
+
+  let step = 0;
+
+  const content = document.getElementById("content");
+  const back = document.getElementById("back");
+  const next = document.getElementById("next");
+
+  function render() {
+    content.innerHTML = steps[step];
+    back.disabled = step === 0;
+    next.disabled = step === steps.length - 1;
+  }
+
+  back.onclick = () => { step--; render(); };
+  next.onclick = () => { step++; render(); };
+
+  render();
+</script>
