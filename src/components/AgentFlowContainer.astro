@@ -1,161 +1,254 @@
 ---
 /*
   ⚠️ DEMO-FROZEN FILE
-  Client-side only.
-  No external state.
+  Read-only guided demo
+  Safe against Lovable interference
 */
----
 
-<style>
-  :root {
-    --blue: #2563eb;
-    --text: #0f172a;
-    --soft: #f8fafc;
-    --border: #e5e7eb;
-  }
+const READ_ONLY = true;
 
-  .container {
-    max-width: 880px;
-    margin: 80px auto;
-    padding: 40px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,.06);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
-  }
-
-  h2 { font-size: 28px; margin-bottom: 16px; }
-  p  { font-size: 18px; line-height: 1.6; }
-
-  .definition-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin-top: 24px;
-  }
-
-  .box {
-    padding: 24px;
-    border-radius: 14px;
-    background: var(--soft);
-    border: 1px solid var(--border);
-  }
-
-  .box.highlight {
-    border-color: var(--blue);
-  }
-
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 48px;
-  }
-
-  button {
-    padding: 12px 24px;
-    border-radius: 999px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .primary { background: var(--blue); color: white; }
-  .secondary { background: #e5e7eb; color: #475569; }
-
-  button:disabled { opacity: .4; cursor: default; }
-
-  .exit {
-    margin-top: 32px;
-    text-align: center;
-  }
-
-  .exit a {
-    font-size: 14px;
-    color: var(--blue);
-    text-decoration: none;
-  }
-</style>
-
-<div class="container">
-  <div id="content"></div>
-
-  <div class="nav">
-    <button id="back" class="secondary">Back</button>
-    <button id="next" class="primary">Next</button>
-  </div>
-
-  <div class="exit">
-    <a href="https://synsuretech.org" target="_blank" rel="noopener">
-      ← Back to SynsureTech.org
-    </a>
-  </div>
-</div>
-
-<script client:load>
-  const steps = [
-    `
-      <h2>Why WikiSure™ Exists</h2>
+const steps = [
+  {
+    title: "Why WikiSure™ Exists",
+    body: `
       <p>
-        Modern ecosystems move fast — but speed alone is not enough.
-        Alignment and clarity enable execution.
+        Modern ecosystems move fast — but alignment decides whether
+        execution actually works.
       </p>
       <p>
-        AI assists — humans stay in the driver’s seat.
+        WikiSure™ helps partners stay in the driver’s seat by making
+        decisions explicit, visible and traceable.
       </p>
-    `,
     `
-      <h2>Demo Context</h2>
-      <p>
-        This demo shows a governed definition flow across partners.
-      </p>
-    `,
+  },
+  {
+    title: "Demo Context",
+    body: `
+      <p><strong>Market:</strong> Germany</p>
+      <p><strong>Scenario:</strong> Embedded Insurance</p>
+      <p><strong>Perspective:</strong> Platform Provider</p>
     `
-      <h2>Term Selection</h2>
-      <p>
-        One shared term. Multiple interpretations.
-      </p>
-    `,
+  },
+  {
+    title: "Term Selection",
+    body: `
+      <p><strong>Example term:</strong></p>
+      <div class="example-box">Embedded Insurance Consent</div>
     `
-      <h2>Definition</h2>
+  },
+  {
+    title: "Definition",
+    body: `
       <div class="definition-grid">
-        <div class="box">
+        <div class="definition-box">
           <h3>Current Definition</h3>
-          <p>Consent is collected during onboarding.</p>
+          <p>Consent is obtained somewhere during the customer journey.</p>
         </div>
-        <div class="box highlight">
+        <div class="definition-box highlighted">
           <h3>Proposed Definition</h3>
-          <p>Consent is explicitly requested and traceable.</p>
+          <p>
+            Explicit consent must be obtained before activation,
+            logged by the platform and auditable by partners.
+          </p>
         </div>
       </div>
-    `,
     `
-      <h2>Validation</h2>
-      <p>
-        Differences are reviewed before execution.
-      </p>
-    `,
+  },
+  {
+    title: "Validation",
+    body: `
+      <div class="signal pass">PASS — Clear and implementable</div>
+      <div class="signal revise">REVISE — Needs refinement</div>
+      <div class="signal flag">FLAG — Expert review required</div>
     `
-      <h2>Decision</h2>
-      <p>
-        One shared definition. Clear accountability.
-      </p>
+  },
+  {
+    title: "Decision",
+    body: `
+      <div class="decision-box">
+        <p><strong>Outcome:</strong> PASS</p>
+        <p><strong>Next step:</strong> Roll out across partners</p>
+      </div>
     `
-  ];
-
-  let step = 0;
-
-  const content = document.getElementById("content");
-  const back = document.getElementById("back");
-  const next = document.getElementById("next");
-
-  function render() {
-    content.innerHTML = steps[step];
-    back.disabled = step === 0;
-    next.disabled = step === steps.length - 1;
   }
+];
 
-  back.onclick = () => { step--; render(); };
-  next.onclick = () => { step++; render(); };
+let currentStep = 0;
 
-  render();
-</script>
+function next() {
+  if (currentStep < steps.length - 1) currentStep++;
+}
+
+function back() {
+  if (currentStep > 0) currentStep--;
+}
+---
+
+<section class="container">
+  <div class="card">
+
+    {currentStep === 0 && (
+      <div class="hero">
+        <h1>WikiSure™ Demo</h1>
+        <p>
+          A guided look at how shared understanding enables
+          faster, safer execution across ecosystems.
+        </p>
+      </div>
+    )}
+
+    <h2>{steps[currentStep].title}</h2>
+
+    <div class="content" set:html={steps[currentStep].body}></div>
+
+    <div class="nav">
+      <button onClick={back} disabled={currentStep === 0}>Back</button>
+
+      <span class="step-indicator">
+        {currentStep + 1} / {steps.length}
+      </span>
+
+      <button onClick={next} disabled={currentStep === steps.length - 1}>Next</button>
+    </div>
+
+    <div class="back-link">
+      <a href="https://synsuretech.org" target="_blank" rel="noopener">
+        ← Back to synsuretech.org
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+:root {
+  --blue: #0a4cff;
+  --bg: #f5f7fb;
+  --gray: #6b7280;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 16px;
+}
+
+.card {
+  background: white;
+  max-width: 720px;
+  width: 100%;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: var(--gray);
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.example-box {
+  padding: 12px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: var(--blue);
+}
+
+.definition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.definition-box {
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.definition-box.highlighted {
+  border: 1px solid var(--blue);
+  background: #eef2ff;
+}
+
+.signal {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.pass { background: #e6fffa; }
+.revise { background: #fff7ed; }
+.flag { background: #fee2e2; }
+
+.decision-box {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+}
+
+button {
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+}
+
+button:disabled {
+  opacity: 0.4;
+}
+
+.step-indicator {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.back-link {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.back-link a {
+  font-size: 13px;
+  color: var(--gray);
+  text-decoration: none;
+}
+
+/* Mobile refinement */
+@media (max-width: 640px) {
+  .definition-grid {
+    grid-template-columns: 1fr;
+  }
+  .nav {
+    flex-direction: column;
+    gap: 12px;
+  }
+  button {
+    width: 100%;
+  }
+}
+</style>
